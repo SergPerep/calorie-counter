@@ -1,5 +1,8 @@
 import express from "express";
+import logRequests from "./utils/logRequests";
 const app = express();
+
+app.use(logRequests);
 
 app.get("/", async (req, res, next) => {
   try {
