@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { AppError } from "./appErrors";
+import log from "../../utils/log";
 const handleErrors = (
   err: AppError,
   req: Request,
@@ -9,7 +10,7 @@ const handleErrors = (
   err.statusCode = err.statusCode || 500;
   err.message = err.message || "Internal server error";
 
-  console.error(err); // for developer
+  log.error("~~ " + err); // for developer
   res.status(err.statusCode).json({ error: err.message }); // for user
 };
 

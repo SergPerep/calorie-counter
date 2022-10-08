@@ -1,3 +1,4 @@
+import sc from "../../utils/statusCodes";
 // Use these to specify behavior of custom error handler middleware
 export class AppError extends Error {
   statusCode: number;
@@ -26,20 +27,22 @@ export class WrongTypeError extends AppError {
   }
 }
 
-//   export class MovieNotFoundError extends Error {
-//     constructor(movieId) {
-//       super();
-//       this.name = "MovieNotFound";
-//       this.message = `Movie with id=${movieId} is not found`;
-//       this.statusCode = 404;
-//     }
-//   }
+export class RecordNotFoundError extends AppError {
+  constructor(recordId: string) {
+    super(
+      `Record with id='${recordId}' was not found`,
+      sc.NOT_FOUND,
+      "RecordNotFoundError"
+    );
+  }
+}
 
-//   export class MissingPropError extends Error {
-//     constructor(propName) {
-//       super();
-//       this.name = "MissingPropError";
-//       this.message = `Property ${propName} is missing`;
-//       this.statusCode = 400;
-//     }
-//   }
+export class CannotBeNegativeError extends AppError {
+  constructor(propName: string, propValue: number) {
+    super(
+      `'${propName}' cannot be negative. Got ${propValue}`,
+      sc.BAD_REQUEST,
+      "CannotBeNegativeError"
+    );
+  }
+}
