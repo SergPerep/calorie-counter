@@ -19,11 +19,24 @@ router.get("/", async (req, res, next) => {
     if (typeof dateStr !== "string")
       throw new WrongTypeError("date", dateStr, "string");
     validateDateString(dateStr);
-    const result = await recordsColl
-      .find({
-        date: new Date(dateStr),
-      })
-      .toArray();
+
+    const pipeline = [
+      {
+        $match: { date: new Date(dateStr) },
+      },
+      {
+        $set: { id: "$_id" },
+      },
+      {
+        $unset: "_id",
+      },
+    ];
+    const aggCursor = recordsColl.aggregate(pipeline);
+    const result = [];
+    for await (const doc of aggCursor) {
+      result.push(doc);
+    }
+
     res.status(sc.OK).json(result);
   } catch (error) {
     next(error);
@@ -37,6 +50,8 @@ router.get("/:id", async (req, res, next) => {
     const recordsColl = app.locals.recordsColl;
     const result = await recordsColl.findOne({ _id: new ObjectId(id) });
     if (!result) throw new RecordNotFoundError(id);
+    result.id = result._id;
+    delete result._id;
     res.status(sc.OK).json(result);
   } catch (error) {
     next(error);
