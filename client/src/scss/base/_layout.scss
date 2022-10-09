@@ -8,11 +8,22 @@ body {
 }
 
 .container {
-    width: 800px;
+    width: 900px;
     margin: 40px auto;
 }
 
 h1 {
     @include fonts.h1;
     margin: 16px 0;
+}
+
+.day-calories-container {
+    display: flex;
+    justify-content: space-between;
+    .meals-wrapper {
+        width: calc(100% - 300px - 24px);
+    }
+    .total-calories-wrapper {
+        width: 300px;
+    }
 }

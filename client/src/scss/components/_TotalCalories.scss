@@ -1,0 +1,16 @@
+@use "../sass-utils/colors";
+@use "../sass-utils/fonts";
+.total-calories {
+    padding: 12px 24px;
+    background-color: white;
+    border-radius: 12px;
+    .total-energy {
+        @include fonts.h2;
+    }
+    .total-nutrition {
+        @include fonts.xsmall;
+        span {
+            margin-right: 16px;
+        }
+    }
+}
