@@ -1,15 +1,34 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./scss/style.scss";
-import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import date from "date-and-time";
+import { today } from "./utils/days";
+import MainPage from "./pages/MainPage";
+import {
+  createBrowserRouter,
+  redirect,
+  RouterProvider,
+} from "react-router-dom";
+
+const todayStr = date.format(today, "YYYY-MM-DD");
+const router = createBrowserRouter([
+  {
+    path: "/",
+    loader: () => redirect(`/${todayStr}`),
+  },
+  {
+    path: "/:dateStr",
+    element: <MainPage />,
+  },
+]);
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <RouterProvider router={router} />
   </React.StrictMode>
 );
 
