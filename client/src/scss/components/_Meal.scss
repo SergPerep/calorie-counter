@@ -1,0 +1,21 @@
+@use "../sass-utils/fonts";
+@use "../sass-utils/colors";
+.meal {
+    margin-bottom: 24px;
+    .meal_header {
+        @include fonts.body;
+        font-weight: bold;
+        padding: 12px 24px;
+        background-color: white;
+        border-radius: 12px 12px 0 0;
+        border-bottom: 1px solid colors.$black-a12;
+    }
+    .meal_footer {
+        @include fonts.small;
+        font-weight: bold;
+        padding: 12px 24px;
+        background-color: white;
+        border-radius: 0 0 12px 12px;
+        display: flex;
+    }
+}

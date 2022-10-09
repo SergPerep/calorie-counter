@@ -1,9 +1,10 @@
 @use "../sass-utils/fonts";
-html,
+@use "../sass-utils/colors";
+
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
 body {
-    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
-        Helvetica Neue, sans-serif;
-    background-color: #f0f0f0;
+    font-family: "Roboto", sans-serif;
+    background-color: colors.$softsand;
 }
 
 .container {

@@ -1,20 +1,39 @@
+import Meal from "./components/Meal";
 import useFetch from "./hooks/useFetch";
-import { Record } from "./types";
+import { Record as RecordInterface } from "./types";
 function App() {
   const currDateStr = "2022-10-10";
-  const { data: records } = useFetch<Record[]>(
+  const { data: records } = useFetch<RecordInterface[]>(
     `http://localhost:5000/records?date=${currDateStr}`
   );
   console.log(records);
   return (
     <div className="App">
-      <h1>React App</h1>
-      {records &&
-        records.map((record) => (
-          <div className="record" key={record.id}>
-            {record.ingredient}
-          </div>
-        ))}
+      <div className="container">
+        <h1>Calorie counter</h1>
+        {records && (
+          <>
+            <Meal
+              title="Breakfast"
+              records={records?.filter(
+                (record) => record.meal_type === "Breakfast"
+              )}
+            />
+            <Meal
+              title="Lunch"
+              records={records?.filter(
+                (record) => record.meal_type === "Lunch"
+              )}
+            />
+            <Meal
+              title="Dinner"
+              records={records?.filter(
+                (record) => record.meal_type === "Dinner"
+              )}
+            />
+          </>
+        )}
+      </div>
     </div>
   );
 }
