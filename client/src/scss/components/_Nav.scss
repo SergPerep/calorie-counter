@@ -5,4 +5,30 @@ nav {
     background-color: white;
     padding: 4px 0;
     box-sizing: border-box;
+    .container {
+        display: flex;
+    }
+    .arrow-buttons {
+        display: flex;
+        align-items: center;
+        button {
+            width: 28px;
+            height: 28px;
+            padding: 0;
+            border-radius: 50%;
+            background-color: transparent;
+            color: colors.$black-a45;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            .icon {
+                width: 20px;
+                height: 20px;
+                font-size: 20px;
+            }
+            &:hover {
+                background-color: colors.$black-a08;
+            }
+        }
+    }
 }

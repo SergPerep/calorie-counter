@@ -6,7 +6,8 @@
     border: 1px solid colors.$black-a12;
     border-radius: 4px;
     background-color: white;
-    max-width: 200px;
+    width: 150px;
+    margin-right: 16px;
 }
 
 .calendar-dropdown__display {
@@ -23,6 +24,7 @@
         width: calc(100% - 4px - 24px);
         padding-top: 1px;
         text-align: left;
+        white-space: nowrap;
     }
     .icon {
         width: 20px;
