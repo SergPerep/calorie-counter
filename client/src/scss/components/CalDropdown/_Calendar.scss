@@ -1,0 +1,86 @@
+@use "../../sass-utils/colors";
+@use "../../sass-utils/fonts";
+.calendar {
+    border-radius: 4px;
+    width: 200px;
+    padding: 8px;
+    background-color: white;
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    box-shadow: 0 0 30px colors.$black-a12;
+}
+
+.calendar_controls {
+    display: flex;
+    padding: 0;
+    button {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: transparent;
+        color: colors.$black-a30;
+    }
+    .month-display {
+        @include fonts.small;
+        width: calc(100% - 32px - 32px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+.calendar_weekdays,
+.calendar_days {
+    @include fonts.xsmall;
+}
+
+.calendar_weekdays {
+    display: flex;
+    color: colors.$black-a12;
+    span {
+        width: calc(100% / 7);
+        text-align: center;
+    }
+}
+
+.calendar_days {
+    display: flex;
+    flex-wrap: wrap;
+    button {
+        width: calc(100% / 7);
+        padding: 0;
+        color: colors.$black-a30;
+        background-color: transparent;
+        .circle {
+            // background-color: colors.$black-a08;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        &:hover {
+            .circle {
+                background-color: colors.$black-a08;
+            }
+        }
+    }
+    button.this-month {
+        color: colors.$black-a60;
+    }
+
+    button.today {
+        color: colors.$success;
+    }
+
+    button.selected {
+        color: white;
+        .circle {
+            background-color: colors.$success;
+        }
+    }
+}

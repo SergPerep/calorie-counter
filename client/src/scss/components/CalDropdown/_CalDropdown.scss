@@ -1,0 +1,32 @@
+@use "../../sass-utils/colors";
+@use "../../sass-utils/fonts";
+@forward "./Calendar";
+.calendar-dropdown {
+    position: relative;
+    border: 1px solid colors.$black-a12;
+    border-radius: 4px;
+    background-color: white;
+    max-width: 200px;
+}
+
+.calendar-dropdown__display {
+    width: 100%;
+    background-color: transparent;
+
+    @include fonts.xsmall;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2px 4px 2px 8px;
+    cursor: pointer;
+    .text {
+        width: calc(100% - 4px - 24px);
+        padding-top: 1px;
+        text-align: left;
+    }
+    .icon {
+        width: 20px;
+        height: 20px;
+        font-size: 20px;
+    }
+}

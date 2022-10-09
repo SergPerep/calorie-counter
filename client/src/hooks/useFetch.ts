@@ -19,7 +19,7 @@ const useFetch = <T = unknown>(url: string) => {
       }
     };
     getFetch();
-  }, []);
+  }, [url]);
   return { data, isLoading, error };
 };
 
