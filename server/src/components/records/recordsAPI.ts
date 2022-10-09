@@ -22,7 +22,7 @@ router.get("/", async (req, res, next) => {
 
     const pipeline = [
       {
-        $match: { date: new Date(dateStr) },
+        $match: { date: dateStr },
       },
       {
         $set: { id: "$_id" },
@@ -65,7 +65,7 @@ router.post("/", async (req, res, next) => {
     const recordsColl = app.locals.recordsColl;
     validateRecordBody(body);
     const result = await recordsColl.insertOne({
-      date: new Date(body.date),
+      date: body.date,
       meal_type: body.meal_type,
       ingredient: body.ingredient,
       fats_per_100: body.fats_per_100,
@@ -94,7 +94,7 @@ router.put("/:id", async (req, res, next) => {
       { _id: new ObjectId(id) },
       {
         $set: {
-          date: new Date(body.date),
+          date: body.date,
           meal_type: body.meal_type,
           ingredient: body.ingredient,
           fats_per_100: body.fats_per_100,
