@@ -21,11 +21,23 @@
             @include fonts.body;
             font-weight: bold;
         }
-        .icon {
+        &__close-button {
             margin-top: 1px;
-            font-size: 20px;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: transparent;
             color: colors.$black-a60;
-            cursor: pointer;
+            border-radius: 50%;
+            .icon {
+                font-size: 20px;
+            }
+            &:hover {
+                background-color: colors.$black-a08;
+            }
         }
     }
     .edit-body {

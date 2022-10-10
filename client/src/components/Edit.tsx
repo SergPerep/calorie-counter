@@ -24,16 +24,17 @@ const Edit = ({
     record.proteins_per_100
   );
   const [portionSizeNum, setPortionSizeNum] = useState(record.quantity);
-  const totalFatsNum = (fatsPer100Num * portionSizeNum) / 100;
-  const totalCarbsNum = (carbsPer100Num * portionSizeNum) / 100;
-  const totalProteinsNum = (proteinsPer100Num * portionSizeNum) / 100;
-  const totalEnergy = calcEnergy(totalFatsNum, totalCarbsNum, totalProteinsNum);
+  const totalFatsNum = (fatsPer100Num * portionSizeNum) / 100 || 0;
+  const totalCarbsNum = (carbsPer100Num * portionSizeNum) / 100 || 0;
+  const totalProteinsNum = (proteinsPer100Num * portionSizeNum) / 100 || 0;
+  const totalEnergy =
+    calcEnergy(totalFatsNum, totalCarbsNum, totalProteinsNum) || 0;
   return (
     <div className="overlay edit-overlay">
       <div className="edit">
         <div className="edit-header">
           <div className="edit-title">Edit</div>
-          <button onClick={onClose}>
+          <button className="edit-header__close-button" onClick={onClose}>
             <Icon name="close" />
           </button>
         </div>
@@ -116,9 +117,9 @@ const Edit = ({
           />
           <div className="edit-food-view">
             <div className="edit-food-view__header">
-              <span>{nameStr}</span>
+              <span>{nameStr || "Food name"}</span>
               <span>
-                {portionSizeNum} {selectedPerValue}
+                {portionSizeNum || 0} {selectedPerValue}
               </span>
             </div>
             <div className="edit-food-view__energy">
