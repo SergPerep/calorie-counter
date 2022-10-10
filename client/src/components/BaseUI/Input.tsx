@@ -7,9 +7,12 @@ type InputProps = {
   suffix?: string;
   placeholder?: string;
   hintStr?: string;
+  value: string | number;
   type?: "text" | "number";
   className?: string;
   hideLabel?: boolean;
+  onChange: ChangeEventHandler<HTMLInputElement>;
+  isDisabled?: boolean;
 };
 
 const Input = ({
@@ -22,12 +25,12 @@ const Input = ({
   type = "text",
   className = "",
   hideLabel = false,
+  value,
+  onChange,
+  isDisabled = false,
 }: InputProps) => {
   const [isFocused, setIsFocused] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [value, setValue] = useState("");
-  const handleInputChange: ChangeEventHandler<HTMLInputElement> = (e) =>
-    setValue(e.target.value);
   const inputEl = useRef<HTMLInputElement>(null);
   const handleClickField = () => inputEl.current?.focus();
   return (
@@ -46,11 +49,12 @@ const Input = ({
           id={id}
           type={type}
           placeholder={placeholder}
-          onChange={handleInputChange}
+          onChange={onChange}
           value={value}
           ref={inputEl}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
+          disabled={isDisabled}
         />
         {suffix && <span className="suffix">{suffix}</span>}
       </div>

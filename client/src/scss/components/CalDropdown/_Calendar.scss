@@ -1,5 +1,6 @@
 @use "../../sass-utils/colors";
 @use "../../sass-utils/fonts";
+@use "../../sass-utils/shadows";
 .calendar {
     border-radius: 4px;
     width: 200px;
@@ -9,6 +10,7 @@
     top: -1px;
     left: -1px;
     box-shadow: 0 0 30px colors.$black-a12;
+    @include shadows.white-block-shadow;
 }
 
 .calendar_controls {

@@ -1,4 +1,4 @@
-import { ChangeEventHandler, useRef, useState } from "react";
+import { ChangeEventHandler, useRef } from "react";
 type SelectPops = {
   label: string;
   id: string;
@@ -10,6 +10,8 @@ type SelectPops = {
   isRequired?: boolean;
   suffix?: string;
   className?: string;
+  selectedValue: string;
+  onChange: ChangeEventHandler<HTMLSelectElement>;
 };
 
 const Select = ({
@@ -20,12 +22,11 @@ const Select = ({
   isRequired = false,
   suffix = "",
   className = "",
+  selectedValue,
+  onChange = () => {},
 }: SelectPops) => {
   const selectEl = useRef<HTMLSelectElement>(null);
-  const [value, setValue] = useState("");
 
-  const handleChangeSelect: ChangeEventHandler<HTMLSelectElement> = (e) =>
-    setValue(e.target.value);
   const handleFieldClick = () => {
     if (selectEl.current) selectEl.current.focus();
   };
@@ -37,9 +38,9 @@ const Select = ({
           id={id}
           ref={selectEl}
           required={isRequired}
-          value={value}
-          onChange={handleChangeSelect}
-          className={!value ? "placeholder-is-visible" : ""}
+          value={selectedValue}
+          onChange={onChange}
+          className={!selectedValue ? "placeholder-is-visible" : ""}
         >
           {placeholder && (
             <option value="" disabled hidden>

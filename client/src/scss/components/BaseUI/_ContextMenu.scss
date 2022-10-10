@@ -1,0 +1,22 @@
+@use "../../sass-utils/colors";
+@use "../../sass-utils/fonts";
+@use "../../sass-utils/shadows";
+.context-menu {
+    @include shadows.white-block-shadow;
+    padding: 4px 0;
+    border-radius: 4px;
+    min-width: 100px;
+    background-color: white;
+    &__button {
+        display: block;
+        width: 100%;
+        text-align: left;
+        background-color: transparent;
+        @include fonts.small;
+        padding: 2px 12px;
+        color: colors.$black-a80;
+        &:hover {
+            background-color: colors.$black-a08;
+        }
+    }
+}

@@ -3,8 +3,13 @@
 .record {
     background-color: white;
     @include fonts.small;
-    padding: 12px 24px;
+    padding: 12px 8px 12px 24px;
     border-bottom: 1px solid colors.$black-a12;
+    display: flex;
+    justify-content: space-between;
+    .record-main {
+        width: calc(100% - 4px - 24px);
+    }
     .header {
         display: flex;
         .title {
@@ -15,6 +20,27 @@
     .footer {
         display: flex;
         color: colors.$black-a60;
+    }
+    .more {
+        position: relative;
+        .context-menu {
+            top: 0;
+            right: 0;
+            position: absolute;
+        }
+    }
+    .more-button {
+        width: 24px;
+        height: 24px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        color: colors.$black-a30;
+        background-color: transparent;
+        &:hover {
+            background-color: colors.$black-a08;
+        }
     }
 }
 
