@@ -37,9 +37,11 @@ const Meal = ({
       </div>
       <div className="meal_footer">
         <div className="nutrition">
-          <span className="fats">Fats: {roundNumber(fats, 2)}</span>
-          <span className="carbs">Carbs: {roundNumber(carbs, 2)}</span>
-          <span className="proteins">Proteins: {roundNumber(proteins, 2)}</span>
+          <span className="fats">Fats: {roundNumber(fats, 2)} g</span>
+          <span className="carbs">Carbs: {roundNumber(carbs, 2)} g</span>
+          <span className="proteins">
+            Proteins: {roundNumber(proteins, 2)} g
+          </span>
         </div>
         <span className="energy">{roundNumber(energy, 0)} kcal</span>
       </div>

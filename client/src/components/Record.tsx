@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Record as RecordInterface } from "../types";
+import calcEnergy from "../utils/calcEnergy";
 import roundNumber from "../utils/roundNumber";
-import ContextMenu from "./BaseUI/ConextMenu";
+import ContextMenu from "./BaseUI/ContextMenu";
 import Icon from "./BaseUI/Icon";
 import Edit from "./Edit";
 const Record = ({ record }: { record: RecordInterface }) => {
@@ -9,10 +10,14 @@ const Record = ({ record }: { record: RecordInterface }) => {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const moreEl = useRef<HTMLDivElement>(null);
   const quantity = record.quantity;
-  const fats = (record.fats_per_100 / 100) * quantity;
-  const carbs = (record.carbs_per_100 / 100) * quantity;
-  const proteins = (record.proteins_per_100 / 100) * quantity;
-  const energy = fats * 9 + carbs * 4 + proteins * 4;
+  const totalFatsNum = (record.fats_per_100 / 100) * quantity;
+  const totalCarbsNum = (record.carbs_per_100 / 100) * quantity;
+  const totalProteinsNum = (record.proteins_per_100 / 100) * quantity;
+  const totalEnergyNum = calcEnergy(
+    totalFatsNum,
+    totalCarbsNum,
+    totalProteinsNum
+  );
 
   useEffect(() => {
     const handleDocumentClick = (e: MouseEvent) => {
@@ -32,17 +37,21 @@ const Record = ({ record }: { record: RecordInterface }) => {
       <div className="record-main">
         <div className="header">
           <span className="title">{record.ingredient}</span>
-          <span className="quantity">{record.quantity} g</span>
+          <span className="quantity">
+            {record.quantity} {record.unit}
+          </span>
         </div>
         <div className="footer">
           <div className="nutrition">
-            <span className="fats">Fats: {record.fats_per_100}</span>
-            <span className="carbs">Carbs: {record.carbs_per_100}</span>
+            <span className="fats">Fats: {roundNumber(totalFatsNum, 2)} g</span>
+            <span className="carbs">
+              Carbs: {roundNumber(totalCarbsNum, 2)} g
+            </span>
             <span className="proteins">
-              Proteins: {record.proteins_per_100}
+              Proteins: {roundNumber(totalProteinsNum, 2)} g
             </span>
           </div>
-          <span className="energy">{roundNumber(energy, 0)} kcal</span>
+          <span className="energy">{roundNumber(totalEnergyNum, 0)} kcal</span>
         </div>
       </div>
       <div className="more" ref={moreEl}>
