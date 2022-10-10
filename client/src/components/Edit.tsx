@@ -8,6 +8,7 @@ import calcEnergy from "../utils/calcEnergy";
 import roundNumber from "../utils/roundNumber";
 import NutritionBar from "./NutritionBar";
 import NutritionLegend from "./NutritionLegend";
+import { useParams } from "react-router-dom";
 
 const Edit = ({
   record,
@@ -29,6 +30,34 @@ const Edit = ({
   const totalProteinsNum = (proteinsPer100Num * portionSizeNum) / 100 || 0;
   const totalEnergy =
     calcEnergy(totalFatsNum, totalCarbsNum, totalProteinsNum) || 0;
+  const { dateStr } = useParams();
+  const handleSaveClick: MouseEventHandler = async (e) => {
+    try {
+      const body = {
+        date: dateStr,
+        meal_type: record.meal_type,
+        ingredient: nameStr,
+        fats_per_100: roundNumber(fatsPer100Num, 2),
+        carbs_per_100: roundNumber(carbsPer100Num, 2),
+        proteins_per_100: roundNumber(proteinsPer100Num, 2),
+        quantity: portionSizeNum,
+        unit: selectedPerValue,
+      };
+      const response = await fetch(
+        `http://localhost:5000/records/${record.id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        }
+      );
+      const data = await response.json();
+      console.log(data);
+      if (response.status === 200) onClose(e);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <div className="overlay edit-overlay">
       <div className="edit">
@@ -138,7 +167,7 @@ const Edit = ({
           </div>
         </div>
         <div className="edit-footer">
-          <Button>Save changes</Button>
+          <Button onClick={handleSaveClick}>Save changes</Button>
           <Button type="secondary" onClick={onClose}>
             Cancel
           </Button>
