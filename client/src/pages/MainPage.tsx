@@ -33,18 +33,21 @@ const MainPage = () => {
                 <>
                   <Meal
                     title="Breakfast"
+                    mealType="breakfast"
                     records={records?.filter(
                       (record) => record.meal_type === "Breakfast"
                     )}
                   />
                   <Meal
                     title="Lunch"
+                    mealType="lunch"
                     records={records?.filter(
                       (record) => record.meal_type === "Lunch"
                     )}
                   />
                   <Meal
                     title="Dinner"
+                    mealType="dinner"
                     records={records?.filter(
                       (record) => record.meal_type === "Dinner"
                     )}

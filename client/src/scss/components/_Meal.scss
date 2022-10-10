@@ -2,13 +2,22 @@
 @use "../sass-utils/colors";
 .meal {
     margin-bottom: 24px;
+    .meal_body {
+        background-color: white;
+    }
     .meal_header {
         @include fonts.body;
         font-weight: bold;
-        padding: 12px 24px;
+        padding: 13px 24px 11px;
         background-color: white;
         border-radius: 12px 12px 0 0;
         border-bottom: 1px solid colors.$black-a12;
+        display: flex;
+        .meal-icon {
+            width: 24px;
+            height: 24px;
+            margin: 1px 8px 0 0;
+        }
     }
     .meal_footer {
         @include fonts.small;
@@ -17,5 +26,17 @@
         background-color: white;
         border-radius: 0 0 12px 12px;
         display: flex;
+    }
+}
+
+.add-meal-button {
+    padding: 8px 24px;
+    width: 100%;
+    background-color: rgba(colors.$success, 0.08);
+    color: colors.$success;
+    text-align: left;
+    border-bottom: 1px solid colors.$black-a12;
+    &:hover {
+        background-color: rgba(colors.$success, 0.12);
     }
 }
