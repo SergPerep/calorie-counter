@@ -25,9 +25,10 @@ const Edit = ({
     record.proteins_per_100
   );
   const [portionSizeNum, setPortionSizeNum] = useState(record.quantity);
-  const totalFatsNum = (fatsPer100Num * portionSizeNum) / 100 || 0;
-  const totalCarbsNum = (carbsPer100Num * portionSizeNum) / 100 || 0;
-  const totalProteinsNum = (proteinsPer100Num * portionSizeNum) / 100 || 0;
+  const totalFatsNum = (fatsPer100Num * (portionSizeNum || 0)) / 100 || 0;
+  const totalCarbsNum = (carbsPer100Num * (portionSizeNum || 0)) / 100 || 0;
+  const totalProteinsNum =
+    (proteinsPer100Num * (portionSizeNum || 0)) / 100 || 0;
   const totalEnergy =
     calcEnergy(totalFatsNum, totalCarbsNum, totalProteinsNum) || 0;
   const { dateStr } = useParams();
@@ -148,7 +149,7 @@ const Edit = ({
             <div className="edit-food-view__header">
               <span>{nameStr || "Food name"}</span>
               <span>
-                {portionSizeNum || 0} {selectedPerValue}
+                {roundNumber(portionSizeNum, 2) || 0} {selectedPerValue}
               </span>
             </div>
             <div className="edit-food-view__energy">

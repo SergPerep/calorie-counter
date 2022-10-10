@@ -29,6 +29,7 @@ const Input = ({
   onChange,
   isDisabled = false,
 }: InputProps) => {
+  value = value || "";
   const [isFocused, setIsFocused] = useState(false);
   const [isError, setIsError] = useState(false);
   const inputEl = useRef<HTMLInputElement>(null);
