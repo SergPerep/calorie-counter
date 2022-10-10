@@ -1,0 +1,16 @@
+@use "./../sass-utils/colors";
+.nutrition-bar {
+    display: flex;
+    height: 4px;
+    border-radius: 2px;
+    overflow: hidden;
+    &__fats {
+        background-color: colors.$fats;
+    }
+    &__carbs {
+        background-color: colors.$carbs;
+    }
+    &__proteins {
+        background-color: colors.$proteins;
+    }
+}

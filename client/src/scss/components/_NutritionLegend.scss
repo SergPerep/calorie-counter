@@ -1,0 +1,40 @@
+@use "../sass-utils/colors";
+@use "../sass-utils/fonts";
+.nutrition-legend {
+    display: flex;
+    &-item {
+        margin-right: 16px;
+        display: flex;
+        align-items: center;
+        .spot {
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+        }
+        .title,
+        .value {
+            @include fonts.xsmall;
+        }
+        .title {
+            color: colors.$black-a60;
+        }
+        .spot:before {
+            content: "";
+            display: block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: colors.$black-a12;
+        }
+    }
+    &-item.fats .spot:before {
+        background-color: colors.$fats;
+    }
+    &-item.carbs .spot:before {
+        background-color: colors.$carbs;
+    }
+    &-item.proteins .spot:before {
+        background-color: colors.$proteins;
+    }
+}

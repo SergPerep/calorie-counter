@@ -6,6 +6,8 @@ import { MouseEventHandler, useState } from "react";
 import { Record } from "../types";
 import calcEnergy from "../utils/calcEnergy";
 import roundNumber from "../utils/roundNumber";
+import NutritionBar from "./NutritionBar";
+import NutritionLegend from "./NutritionLegend";
 
 const Edit = ({
   record,
@@ -16,10 +18,16 @@ const Edit = ({
 }) => {
   const [nameStr, setNameStr] = useState(record.ingredient);
   const [selectedPerValue, setSelectedPerValue] = useState(record.unit);
-  const [fatsNum, setFatsNum] = useState(record.fats_per_100);
-  const [carbsNum, setCarbsNum] = useState(record.carbs_per_100);
-  const [proteinsNum, setProteinsNum] = useState(record.proteins_per_100);
+  const [fatsPer100Num, setFatsNum] = useState(record.fats_per_100);
+  const [carbsPer100Num, setCarbsPer100Num] = useState(record.carbs_per_100);
+  const [proteinsPer100Num, setProteinsPer100Num] = useState(
+    record.proteins_per_100
+  );
   const [portionSizeNum, setPortionSizeNum] = useState(record.quantity);
+  const totalFatsNum = (fatsPer100Num * portionSizeNum) / 100;
+  const totalCarbsNum = (carbsPer100Num * portionSizeNum) / 100;
+  const totalProteinsNum = (proteinsPer100Num * portionSizeNum) / 100;
+  const totalEnergy = calcEnergy(totalFatsNum, totalCarbsNum, totalProteinsNum);
   return (
     <div className="overlay edit-overlay">
       <div className="edit">
@@ -57,7 +65,7 @@ const Edit = ({
             type="number"
             placeholder="e.g. 12.3"
             suffix="g"
-            value={fatsNum}
+            value={fatsPer100Num}
             onChange={(e) => setFatsNum(parseFloat(e.target.value))}
           />
           <Input
@@ -67,8 +75,8 @@ const Edit = ({
             type="number"
             placeholder="e.g. 23.1"
             suffix="g"
-            value={carbsNum}
-            onChange={(e) => setCarbsNum(parseFloat(e.target.value))}
+            value={carbsPer100Num}
+            onChange={(e) => setCarbsPer100Num(parseFloat(e.target.value))}
           />
           <Input
             label={`Proteins (per 100 ${selectedPerValue})`}
@@ -77,8 +85,8 @@ const Edit = ({
             type="number"
             placeholder="e.g. 7.29"
             suffix="g"
-            value={proteinsNum}
-            onChange={(e) => setProteinsNum(parseFloat(e.target.value))}
+            value={proteinsPer100Num}
+            onChange={(e) => setProteinsPer100Num(parseFloat(e.target.value))}
           />
           <Input
             label={`Energy (per 100 ${selectedPerValue})`}
@@ -87,7 +95,10 @@ const Edit = ({
             type="number"
             placeholder="300"
             suffix="kcal"
-            value={roundNumber(calcEnergy(fatsNum, carbsNum, proteinsNum), 2)}
+            value={roundNumber(
+              calcEnergy(fatsPer100Num, carbsPer100Num, proteinsPer100Num),
+              0
+            )}
             onChange={() => {}}
             isDisabled={true}
           />
@@ -103,6 +114,27 @@ const Edit = ({
             value={portionSizeNum}
             onChange={(e) => setPortionSizeNum(parseFloat(e.target.value))}
           />
+          <div className="edit-food-view">
+            <div className="edit-food-view__header">
+              <span>{nameStr}</span>
+              <span>
+                {portionSizeNum} {selectedPerValue}
+              </span>
+            </div>
+            <div className="edit-food-view__energy">
+              {roundNumber(totalEnergy, 0)} kcal
+            </div>
+            <NutritionBar
+              fatsNum={roundNumber(totalFatsNum, 2)}
+              carbsNum={roundNumber(totalCarbsNum, 2)}
+              proteinsNum={roundNumber(totalProteinsNum, 2)}
+            />
+            <NutritionLegend
+              fatsNum={roundNumber(totalFatsNum, 2)}
+              carbsNum={roundNumber(totalCarbsNum, 2)}
+              proteinsNum={roundNumber(totalProteinsNum, 2)}
+            />
+          </div>
         </div>
         <div className="edit-footer">
           <Button>Save changes</Button>

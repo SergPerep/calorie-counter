@@ -67,3 +67,22 @@
         }
     }
 }
+.edit-food-view {
+    width: 100%;
+    border: 1px solid colors.$black-a12;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 12px;
+    &__header {
+        display: flex;
+        @include fonts.xsmall;
+        font-weight: bold;
+        justify-content: space-between;
+    }
+    &__energy {
+        @include fonts.h4;
+    }
+    .nutrition-bar {
+        margin: 4px 0 4px;
+    }
+}
