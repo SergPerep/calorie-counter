@@ -1,0 +1,68 @@
+@use "../sass-utils/colors";
+@use "../sass-utils/fonts";
+
+.edit-overlay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.edit {
+    width: 610px;
+    .edit-header {
+        background-color: white;
+        padding: 9px 24px 7px;
+        display: flex;
+        justify-content: space-between;
+        border-radius: 12px 12px 0 0;
+        border-bottom: 1px solid colors.$black-a12;
+        .edit-title {
+            @include fonts.body;
+            font-weight: bold;
+        }
+        .icon {
+            margin-top: 1px;
+            font-size: 20px;
+            color: colors.$black-a60;
+            cursor: pointer;
+        }
+    }
+    .edit-body {
+        background-color: white;
+        padding: 12px 24px;
+        border-bottom: 1px solid colors.$black-a12;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+
+        h3 {
+            @include fonts.small;
+            margin-top: 8px;
+            width: 100%;
+        }
+        .select-field,
+        .input-field {
+            margin: 6px 0;
+        }
+        .name-field,
+        .per-field {
+            width: calc((100% - 16px) / 2);
+        }
+        .nutrition-field {
+            width: calc((100% - 16px - 16px - 16px) / 4);
+        }
+        .portion-size-field {
+            width: 100%;
+        }
+    }
+    .edit-footer {
+        background-color: white;
+        padding: 8px 24px;
+        border-radius: 0 0 12px 12px;
+        display: flex;
+        flex-direction: row-reverse;
+        button:not(:last-child) {
+            margin-left: 8px;
+        }
+    }
+}

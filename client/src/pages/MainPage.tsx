@@ -6,6 +6,7 @@ import calcTotalNutrition from "../utils/calcTotalNutrition";
 import date from "date-and-time";
 import Nav from "../components/Nav";
 import useFetch from "../hooks/useFetch";
+import Edit from "../components/Edit";
 const MainPage = () => {
   const { dateStr: currDateStr } = useParams();
   const { data: records } = useFetch<RecordInterface[]>(
@@ -22,6 +23,7 @@ const MainPage = () => {
     <>
       <Nav selectedDateStr={currDateStr || ""} />
       <main>
+        <Edit />
         <div className="container">
           <h1>
             {currDateStr &&

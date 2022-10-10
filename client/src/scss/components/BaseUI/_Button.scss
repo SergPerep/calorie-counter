@@ -1,0 +1,15 @@
+@use "../../sass-utils/colors";
+@use "../../sass-utils/fonts";
+.button {
+    padding: 3px 8px 1px;
+    @include fonts.small;
+    color: white;
+    background-color: colors.$success;
+    border-radius: 4px;
+}
+
+.button.secondary {
+    background-color: colors.$black-a08;
+    border: 1px solid colors.$black-a12;
+    color: colors.$black-a60;
+}

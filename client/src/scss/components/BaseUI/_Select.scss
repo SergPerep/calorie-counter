@@ -1,0 +1,53 @@
+@use "../../sass-utils/colors";
+@use "../../sass-utils/fonts";
+.select-field {
+    .field {
+        background-color: colors.$black-a08;
+        border-radius: 8px;
+        display: flex;
+        align-items: baseline;
+        position: relative;
+    }
+    label {
+        padding-bottom: 6px;
+        display: block;
+        @include fonts.xsmall;
+        color: colors.$black-a60;
+    }
+    select {
+        width: 100%;
+        border: none;
+        background-color: transparent;
+        padding: 6px 12px;
+        appearance: none;
+        border: 1px solid transparent;
+        @include fonts.xsmall;
+        &:focus {
+            outline: 2px solid colors.$success;
+            border-radius: 8px;
+        }
+        &.placeholder-is-visible {
+            color: colors.$black-a60;
+        }
+    }
+    .appendix {
+        position: absolute;
+        top: 0;
+        right: 0;
+        display: flex;
+        height: 100%;
+        align-items: center;
+        pointer-events: none; // lets click pas through .appendix to select
+        .suffix {
+            @include fonts.xsmall;
+            color: colors.$black-a60;
+        }
+        .arrow-icon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            width: 40px;
+        }
+    }
+}

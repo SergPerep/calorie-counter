@@ -1,8 +1,14 @@
 @forward "./base/reset";
 @forward "./base/layout";
 @forward "./base/icons";
+@forward "./components/BaseUI/Button";
+@forward "./components/BaseUI/Icon";
+@forward "./components/BaseUI/Input";
+@forward "./components/BaseUI/Select";
 @forward "./components/Record";
 @forward "./components/Meal";
 @forward "./components/TotalCalories";
 @forward "./components/CalDropdown/CalDropdown";
 @forward "./components/Nav";
+@forward "./components/overlay";
+@forward "./components/Edit";
