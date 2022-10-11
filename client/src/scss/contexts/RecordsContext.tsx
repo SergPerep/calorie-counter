@@ -17,9 +17,10 @@ export const RecordsContext = createContext<ValuesToShare>({
   deleteRecord: () => {},
 });
 export const RecordsProvider = (props: PropsWithChildren) => {
+  const url = "/.netlify/functions/api/records";
   const { dateStr: currDateStr } = useParams();
   const { data: records, setData: setRecords } = useFetch<Record[]>(
-    `http://localhost:5000/records?date=${currDateStr}`
+    `${url}?date=${currDateStr}`
   );
 
   // ADD RECORD
@@ -53,7 +54,7 @@ export const RecordsProvider = (props: PropsWithChildren) => {
         quantity: portionSizeNum,
         unit: selectedPerValue,
       };
-      const response = await fetch("http://localhost:5000/records", {
+      const response = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -104,7 +105,7 @@ export const RecordsProvider = (props: PropsWithChildren) => {
         quantity: portionSizeNum,
         unit: selectedPerValue,
       };
-      const response = await fetch(`http://localhost:5000/records/${id}`, {
+      const response = await fetch(`${url}/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -127,7 +128,7 @@ export const RecordsProvider = (props: PropsWithChildren) => {
   // DELETE A RECORD
   const deleteRecord = async (id: string) => {
     try {
-      const response = await fetch(`http://localhost:5000/records/${id}`, {
+      const response = await fetch(`${url}/${id}`, {
         method: "DELETE",
       });
       if (response.status === 200) {
