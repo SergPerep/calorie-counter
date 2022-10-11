@@ -27,11 +27,12 @@
         border-radius: 0 0 12px 12px;
         display: flex;
     }
-    > .spinner {
+    .meal_body > .spinner {
         display: flex;
         justify-content: center;
         align-items: center;
         padding: 12px;
+        border-bottom: 1px solid colors.$black-a12;
     }
 }
 
