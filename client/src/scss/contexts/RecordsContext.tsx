@@ -17,7 +17,7 @@ export const RecordsContext = createContext<ValuesToShare>({
   deleteRecord: () => {},
 });
 export const RecordsProvider = (props: PropsWithChildren) => {
-  const url = "/.netlify/functions/api/records";
+  const url = "https://calorie-counter-api.onrender.com/records";
   const { dateStr: currDateStr } = useParams();
   const { data: records, setData: setRecords } = useFetch<Record[]>(
     `${url}?date=${currDateStr}`
