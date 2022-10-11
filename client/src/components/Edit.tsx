@@ -3,31 +3,46 @@ import Icon from "./BaseUI/Icon";
 import Input from "./BaseUI/Input";
 import Select from "./BaseUI/Select";
 import { MouseEventHandler, useContext, useState } from "react";
-import { Record } from "../types";
+import { MealType, Record } from "../types";
 import calcEnergy from "../utils/calcEnergy";
 import roundNumber from "../utils/roundNumber";
 import NutritionBar from "./NutritionBar";
 import NutritionLegend from "./NutritionLegend";
 import { useParams } from "react-router-dom";
 import { RecordsContext } from "../scss/contexts/RecordsContext";
+import calcTotalNutrition from "../utils/calcTotalNutrition";
 
-const Edit = ({ record, onClose }: { record: Record; onClose: Function }) => {
-  const { updateRecord } = useContext(RecordsContext);
+const Edit = ({
+  title = "Edit",
+  actionButtonName = "Save changes",
+  mealType,
+  record,
+  onClose,
+  actionType,
+}: {
+  title: string;
+  actionButtonName: string;
+  record?: Record;
+  onClose: Function;
+  mealType?: MealType;
+  actionType: "updateRecord" | "addRecord";
+}) => {
+  const { updateRecord, addRecord } = useContext(RecordsContext);
   const { dateStr } = useParams();
-  const [nameStr, setNameStr] = useState(record.ingredient);
-  const [selectedPerValue, setSelectedPerValue] = useState(record.unit);
-  const [fatsPer100Num, setFatsNum] = useState(record.fats_per_100);
-  const [carbsPer100Num, setCarbsPer100Num] = useState(record.carbs_per_100);
+  const [nameStr, setNameStr] = useState(record?.ingredient || "");
+  const [selectedPerValue, setSelectedPerValue] = useState(record?.unit || "g");
+  const [fatsPer100Num, setFatsNum] = useState(record?.fats_per_100);
+  const [carbsPer100Num, setCarbsPer100Num] = useState(record?.carbs_per_100);
   const [proteinsPer100Num, setProteinsPer100Num] = useState(
-    record.proteins_per_100
+    record?.proteins_per_100
   );
-  const [portionSizeNum, setPortionSizeNum] = useState(record.quantity);
-  const totalFatsNum = (fatsPer100Num * (portionSizeNum || 0)) / 100 || 0;
-  const totalCarbsNum = (carbsPer100Num * (portionSizeNum || 0)) / 100 || 0;
-  const totalProteinsNum =
-    (proteinsPer100Num * (portionSizeNum || 0)) / 100 || 0;
-  const totalEnergy =
-    calcEnergy(totalFatsNum, totalCarbsNum, totalProteinsNum) || 0;
+
+  const [portionSizeNum, setPortionSizeNum] = useState(record?.quantity);
+  const { totalFatsNum, totalCarbsNum, totalProteinsNum, totalEnergy } =
+    calcTotalNutrition(
+      { fatsPer100Num, carbsPer100Num, proteinsPer100Num },
+      portionSizeNum
+    );
 
   const checkIfNumberFieldValid = (value: number): [boolean, string] => {
     let isValid = true;
@@ -39,45 +54,80 @@ const Edit = ({ record, onClose }: { record: Record; onClose: Function }) => {
     return [isValid, hintStr];
   };
 
-  const [areFatsValid, fatsHintStr] = checkIfNumberFieldValid(fatsPer100Num);
-  const [areProteinsValid, proteinsHintStr] =
-    checkIfNumberFieldValid(proteinsPer100Num);
-  const [areCarbsValid, carbsHintStr] = checkIfNumberFieldValid(carbsPer100Num);
-  const [isPortionSizeValid, portionSizeHintStr] =
-    checkIfNumberFieldValid(portionSizeNum);
+  const [areFatsValid, fatsHintStr] = checkIfNumberFieldValid(
+    fatsPer100Num || 0
+  );
+  const [areProteinsValid, proteinsHintStr] = checkIfNumberFieldValid(
+    proteinsPer100Num || 0
+  );
+  const [areCarbsValid, carbsHintStr] = checkIfNumberFieldValid(
+    carbsPer100Num || 0
+  );
+  const [isPortionSizeValid, portionSizeHintStr] = checkIfNumberFieldValid(
+    portionSizeNum || 0
+  );
 
   const isSaveButtonDisabled =
     nameStr &&
+    typeof fatsPer100Num === "number" &&
     fatsPer100Num > 0 &&
+    typeof carbsPer100Num === "number" &&
     carbsPer100Num > 0 &&
+    typeof proteinsPer100Num === "number" &&
     proteinsPer100Num > 0 &&
     portionSizeNum
       ? false
       : true;
 
-  const handleSaveClick: MouseEventHandler = async (e) => {
+  const handleUpdateRecord = async () => {
+    const body = {
+      dateStr,
+      mealType: record?.meal_type,
+      nameStr,
+      fatsPer100Num: roundNumber(fatsPer100Num || 0, 2),
+      carbsPer100Num: roundNumber(carbsPer100Num || 0, 2),
+      proteinsPer100Num: roundNumber(proteinsPer100Num || 0, 2),
+      portionSizeNum,
+      selectedPerValue,
+    };
+    const { statusCode } = await updateRecord(record?.id, body);
+    if (statusCode === 200) onClose();
+  };
+
+  const handleAddRecord = async () => {
+    const body = {
+      dateStr,
+      mealType,
+      nameStr,
+      fatsPer100Num: roundNumber(fatsPer100Num || 0, 2),
+      carbsPer100Num: roundNumber(carbsPer100Num || 0, 2),
+      proteinsPer100Num: roundNumber(proteinsPer100Num || 0, 2),
+      portionSizeNum,
+      selectedPerValue,
+    };
+    const { statusCode } = await addRecord(body);
+    if (statusCode === 201) onClose();
+  };
+
+  const handleActionClick: MouseEventHandler = async (e) => {
     try {
-      const body = {
-        dateStr,
-        mealType: record.meal_type,
-        nameStr,
-        fatsPer100Num: roundNumber(fatsPer100Num, 2),
-        carbsPer100Num: roundNumber(carbsPer100Num, 2),
-        proteinsPer100Num: roundNumber(proteinsPer100Num, 2),
-        portionSizeNum,
-        selectedPerValue,
-      };
-      const { statusCode } = await updateRecord(record.id, body);
-      if (statusCode === 200) onClose(e);
+      switch (actionType) {
+        case "updateRecord":
+          await handleUpdateRecord();
+          break;
+        case "addRecord":
+          await handleAddRecord();
+      }
     } catch (error) {
       console.error(error);
     }
   };
+
   return (
     <div className="overlay edit-overlay">
       <div className="edit">
         <div className="edit-header">
-          <div className="edit-title">Edit</div>
+          <div className="edit-title">{title}</div>
           <button
             className="edit-header__close-button"
             onClick={onClose as MouseEventHandler}
@@ -193,8 +243,8 @@ const Edit = ({ record, onClose }: { record: Record; onClose: Function }) => {
           </div>
         </div>
         <div className="edit-footer">
-          <Button onClick={handleSaveClick} isDisabled={isSaveButtonDisabled}>
-            Save changes
+          <Button onClick={handleActionClick} isDisabled={isSaveButtonDisabled}>
+            {actionButtonName}
           </Button>
           <Button type="secondary" onClick={onClose as MouseEventHandler}>
             Cancel

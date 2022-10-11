@@ -1,8 +1,7 @@
-import { Record as RecordInterface } from "../types";
+import { MealType, Record as RecordInterface } from "../types";
 import Record from "./Record";
 import roundNumber from "../utils/roundNumber";
-import calcTotalNutrition from "../utils/calcTotalNutrition";
-import calcEnergy from "../utils/calcEnergy";
+import calcTotalNutritionForRecords from "../utils/calcTotalNutritionForRecords";
 import AddButtonBtn from "./AddRecordsBtn";
 import { ReactComponent as MoonSVG } from "../assets/Moon.svg";
 import { ReactComponent as SunriseSVG } from "../assets/Sunrise.svg";
@@ -11,14 +10,14 @@ import { ReactComponent as SunSVG } from "../assets/Sun.svg";
 const Meal = ({
   title,
   records,
-  mealType = "breakfast",
+  mealType,
 }: {
   title: string;
   records: RecordInterface[];
-  mealType: "breakfast" | "lunch" | "dinner";
+  mealType: MealType;
 }) => {
-  const { fats, carbs, proteins } = calcTotalNutrition(records);
-  const energy = calcEnergy(fats, carbs, proteins);
+  const { totalFatsNum, totalCarbsNum, totalProteinsNum, totalEnergyNum } =
+    calcTotalNutritionForRecords(records);
   return (
     <div className="meal">
       <div className="meal_header">
@@ -30,20 +29,22 @@ const Meal = ({
         <div className="meal_title">{title}</div>
       </div>
       <div className="meal_body">
-        <AddButtonBtn />
+        <AddButtonBtn mealType={mealType} />
         {records.map((record) => (
           <Record key={record.id} record={record} />
         ))}
       </div>
       <div className="meal_footer">
         <div className="nutrition">
-          <span className="fats">Fats: {roundNumber(fats, 2)} g</span>
-          <span className="carbs">Carbs: {roundNumber(carbs, 2)} g</span>
+          <span className="fats">Fats: {roundNumber(totalFatsNum, 2)} g</span>
+          <span className="carbs">
+            Carbs: {roundNumber(totalCarbsNum, 2)} g
+          </span>
           <span className="proteins">
-            Proteins: {roundNumber(proteins, 2)} g
+            Proteins: {roundNumber(totalProteinsNum, 2)} g
           </span>
         </div>
-        <span className="energy">{roundNumber(energy, 0)} kcal</span>
+        <span className="energy">{roundNumber(totalEnergyNum, 0)} kcal</span>
       </div>
     </div>
   );

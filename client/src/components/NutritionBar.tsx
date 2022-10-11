@@ -1,11 +1,11 @@
 const NutritionBar = ({
-  fatsNum,
-  carbsNum,
-  proteinsNum,
+  fatsNum = 0,
+  carbsNum = 0,
+  proteinsNum = 0,
 }: {
-  fatsNum: number;
-  carbsNum: number;
-  proteinsNum: number;
+  fatsNum: number | undefined;
+  carbsNum: number | undefined;
+  proteinsNum: number | undefined;
 }) => {
   const sumNum = fatsNum + carbsNum + proteinsNum;
   const fatsPercentNum = (fatsNum * 100) / sumNum;

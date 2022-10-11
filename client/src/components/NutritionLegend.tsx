@@ -19,13 +19,13 @@ const NutritionLegendItem = ({
 };
 
 const NutritionLegend = ({
-  fatsNum,
-  carbsNum,
-  proteinsNum,
+  fatsNum = 0,
+  carbsNum = 0,
+  proteinsNum = 0,
 }: {
-  fatsNum: number;
-  carbsNum: number;
-  proteinsNum: number;
+  fatsNum: number | undefined;
+  carbsNum: number | undefined;
+  proteinsNum: number | undefined;
 }) => {
   return (
     <div className="nutrition-legend">

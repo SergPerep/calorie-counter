@@ -79,7 +79,13 @@ const Record = ({ record }: { record: RecordInterface }) => {
         )}
       </div>
       {isEditOpen && (
-        <Edit onClose={() => setIsEditOpen(false)} record={record} />
+        <Edit
+          title="Edit"
+          actionButtonName="Save changes"
+          record={record}
+          onClose={() => setIsEditOpen(false)}
+          actionType="updateRecord"
+        />
       )}
     </div>
   );

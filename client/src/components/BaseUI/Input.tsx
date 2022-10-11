@@ -7,7 +7,7 @@ type InputProps = {
   suffix?: string;
   placeholder?: string;
   hintStr?: string;
-  value: string | number;
+  value: string | number | undefined;
   type?: "text" | "number";
   className?: string;
   hideLabel?: boolean;
@@ -26,19 +26,19 @@ const Input = ({
   type = "text",
   className = "",
   hideLabel = false,
-  value,
+  value = "",
   onChange,
   isDisabled = false,
   isValid = true,
 }: InputProps) => {
-  const checkValue = (value: string | number) => {
+  const convertValue = (value: string | number) => {
     if (typeof value === "number") {
       if (isNaN(value)) return "";
     }
     return value;
   };
 
-  value = checkValue(value);
+  value = convertValue(value);
 
   const [isFocused, setIsFocused] = useState(false);
   const inputEl = useRef<HTMLInputElement>(null);

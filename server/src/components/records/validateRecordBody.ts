@@ -37,14 +37,14 @@ const validateRecordBody = (record: Record) => {
   if (!meal_type) throw new EmptyFieldError("meal_type");
   if (typeof meal_type !== "string")
     throw new WrongTypeError("meal_type", meal_type, "string");
-  const isMealTypeValid = ["Breakfast", "Lunch", "Dinner"].reduce(
+  const isMealTypeValid = ["breakfast", "lunch", "dinner"].reduce(
     (prevVal, currVal) => currVal === meal_type || prevVal,
     false
   );
   console.log(isMealTypeValid);
   if (!isMealTypeValid)
     throw new AppError(
-      `Expected meal_type to be 'Breakfast', 'Lunch' or 'Dinner'. Instead got '${meal_type}' `,
+      `Expected meal_type to be 'breakfast', 'lunch' or 'dinner'. Instead got '${meal_type}' `,
       sc.BAD_REQUEST
     );
 

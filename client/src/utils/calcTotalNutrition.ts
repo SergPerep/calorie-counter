@@ -1,19 +1,37 @@
-import { Record } from "../types";
-const calcTotalNutrition = (records: Record[] | undefined) => {
-  if (!records) return { fats: 0, carbs: 0, proteins: 0 };
-  const nutrition = records.reduce(
-    (prevVal, currVal) => {
-      const fats = (currVal.fats_per_100 / 100) * currVal.quantity;
-      const carbs = (currVal.carbs_per_100 / 100) * currVal.quantity;
-      const proteins = (currVal.proteins_per_100 / 100) * currVal.quantity;
-      return {
-        fats: prevVal.fats + fats,
-        carbs: prevVal.carbs + carbs,
-        proteins: prevVal.proteins + proteins,
-      };
-    },
-    { fats: 0, carbs: 0, proteins: 0 }
-  );
-  return nutrition;
+import calcEnergy from "./calcEnergy";
+const calcTotalNutrition = (
+  {
+    fatsPer100Num,
+    carbsPer100Num,
+    proteinsPer100Num,
+  }: {
+    fatsPer100Num: number | undefined;
+    carbsPer100Num: number | undefined;
+    proteinsPer100Num: number | undefined;
+  },
+  portionSizeNum: number | undefined
+) => {
+  let totalFatsNum, totalCarbsNum, totalProteinsNum, totalEnergy;
+  if (portionSizeNum === undefined) {
+    totalFatsNum = undefined;
+    totalCarbsNum = undefined;
+    totalProteinsNum = undefined;
+    totalEnergy = undefined;
+  } else {
+    totalFatsNum =
+      fatsPer100Num !== undefined
+        ? (fatsPer100Num * portionSizeNum) / 100
+        : undefined;
+    totalCarbsNum =
+      carbsPer100Num !== undefined
+        ? (carbsPer100Num * portionSizeNum) / 100
+        : undefined;
+    totalProteinsNum =
+      proteinsPer100Num !== undefined
+        ? (proteinsPer100Num * portionSizeNum) / 100
+        : undefined;
+    totalEnergy = calcEnergy(totalFatsNum, totalCarbsNum, totalProteinsNum);
+  }
+  return { totalFatsNum, totalCarbsNum, totalProteinsNum, totalEnergy };
 };
 export default calcTotalNutrition;

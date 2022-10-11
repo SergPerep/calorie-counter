@@ -5,14 +5,16 @@ import { Record, MealType, SizeUnit } from "../../types";
 
 type ValuesToShare = {
   records: Record[] | undefined;
+  addRecord: Function;
   deleteRecord: Function;
   updateRecord: Function;
 };
 
 export const RecordsContext = createContext<ValuesToShare>({
   records: undefined,
-  deleteRecord: () => {},
+  addRecord: () => {},
   updateRecord: () => {},
+  deleteRecord: () => {},
 });
 export const RecordsProvider = (props: PropsWithChildren) => {
   const { dateStr: currDateStr } = useParams();
@@ -20,20 +22,55 @@ export const RecordsProvider = (props: PropsWithChildren) => {
     `http://localhost:5000/records?date=${currDateStr}`
   );
 
-  const deleteRecord = async (id: string) => {
+  // ADD RECORD
+  const addRecord = async ({
+    dateStr,
+    mealType,
+    nameStr,
+    fatsPer100Num,
+    carbsPer100Num,
+    proteinsPer100Num,
+    portionSizeNum,
+    selectedPerValue,
+  }: {
+    dateStr: string;
+    mealType: MealType;
+    nameStr: string;
+    fatsPer100Num: number;
+    carbsPer100Num: number;
+    proteinsPer100Num: number;
+    portionSizeNum: number;
+    selectedPerValue: SizeUnit;
+  }) => {
     try {
-      const response = await fetch(`http://localhost:5000/records/${id}`, {
-        method: "DELETE",
+      const body = {
+        date: dateStr,
+        meal_type: mealType,
+        ingredient: nameStr,
+        fats_per_100: fatsPer100Num,
+        carbs_per_100: carbsPer100Num,
+        proteins_per_100: proteinsPer100Num,
+        quantity: portionSizeNum,
+        unit: selectedPerValue,
+      };
+      const response = await fetch("http://localhost:5000/records", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
       });
-      if (response.status === 200) {
-        const updatedRecords = records?.filter((record) => record.id !== id);
-        setRecords(updatedRecords);
+      const statusCode = response.status;
+      const data = await response.json();
+      if (statusCode === 201) {
+        const recordId = data.recordId as string;
+        setRecords([{ id: recordId, ...body }, ...(records || [])]);
       }
+      return { statusCode, data };
     } catch (error) {
       console.error(error);
     }
   };
 
+  // UPDATE A RECORD
   const updateRecord = async (
     id: string,
     {
@@ -87,10 +124,26 @@ export const RecordsProvider = (props: PropsWithChildren) => {
     }
   };
 
+  // DELETE A RECORD
+  const deleteRecord = async (id: string) => {
+    try {
+      const response = await fetch(`http://localhost:5000/records/${id}`, {
+        method: "DELETE",
+      });
+      if (response.status === 200) {
+        const updatedRecords = records?.filter((record) => record.id !== id);
+        setRecords(updatedRecords);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const valuesToShare: ValuesToShare = {
     records,
-    deleteRecord,
+    addRecord,
     updateRecord,
+    deleteRecord,
   };
   return (
     <RecordsContext.Provider value={valuesToShare}>

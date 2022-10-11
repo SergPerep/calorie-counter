@@ -75,9 +75,10 @@ router.post("/", async (req, res, next) => {
       unit: body.unit,
     });
     if (!result.insertedId) throw new AppError("Record was not added");
-    res
-      .status(sc.CREATED)
-      .json({ message: `Record created with id=${result.insertedId}` });
+    res.status(sc.CREATED).json({
+      message: `Record created with id=${result.insertedId}`,
+      recordId: result.insertedId,
+    });
   } catch (error) {
     next(error);
   }
@@ -112,6 +113,18 @@ router.put("/:id", async (req, res, next) => {
   }
 });
 
+// DELETE ALL RECORDS
+router.delete("/terminate-all", async (req, res, next) => {
+  try {
+    const recordsColl = app.locals.recordsColl;
+    const result = await recordsColl.deleteMany({});
+    if (result.deletedCount === 0) throw new AppError("Nothing was deleted");
+    res.status(sc.OK).json({ message: "All records have been deleted" });
+  } catch (error) {
+    next(error);
+  }
+});
+
 // DELETE A RECORD
 router.delete("/:id", async (req, res, next) => {
   try {
@@ -120,18 +133,6 @@ router.delete("/:id", async (req, res, next) => {
     const result = await recordsColl.deleteOne({ _id: new ObjectId(id) });
     if (result.deletedCount === 0) throw new RecordNotFoundError(id);
     res.status(sc.OK).json({ message: "Record has been deleted" });
-  } catch (error) {
-    next(error);
-  }
-});
-
-// DELETE ALL RECORDS
-router.delete("/terminate-all", async (req, res, next) => {
-  try {
-    const recordsColl = app.locals.recordsColl;
-    const result = await recordsColl.deleteMany({});
-    if (result.deletedCount === 0) throw new AppError("Nothing was deleted");
-    res.status(sc.OK).json({ message: "All records have been deleted" });
   } catch (error) {
     next(error);
   }
