@@ -1,4 +1,4 @@
-import { MealType, Record as RecordInterface } from "../types";
+import { MealType } from "../types";
 import Record from "./Record";
 import roundNumber from "../utils/roundNumber";
 import calcTotalNutritionForRecords from "../utils/calcTotalNutritionForRecords";
@@ -6,16 +6,12 @@ import AddButtonBtn from "./AddRecordsBtn";
 import { ReactComponent as MoonSVG } from "../assets/Moon.svg";
 import { ReactComponent as SunriseSVG } from "../assets/Sunrise.svg";
 import { ReactComponent as SunSVG } from "../assets/Sun.svg";
+import Spinner from "./BaseUI/Spinner";
+import { useContext } from "react";
+import { RecordsContext } from "../contexts/RecordsContext";
 
-const Meal = ({
-  title,
-  records,
-  mealType,
-}: {
-  title: string;
-  records: RecordInterface[];
-  mealType: MealType;
-}) => {
+const Meal = ({ title, mealType }: { title: string; mealType: MealType }) => {
+  const { records, areRecordsLoading } = useContext(RecordsContext);
   const { totalFatsNum, totalCarbsNum, totalProteinsNum, totalEnergyNum } =
     calcTotalNutritionForRecords(records);
   return (
@@ -29,10 +25,17 @@ const Meal = ({
         <div className="meal_title">{title}</div>
       </div>
       <div className="meal_body">
-        <AddButtonBtn mealType={mealType} />
-        {records.map((record) => (
-          <Record key={record.id} record={record} />
-        ))}
+        {areRecordsLoading && <Spinner />}
+        {!areRecordsLoading && records && (
+          <>
+            <AddButtonBtn mealType={mealType} />
+            {records
+              .filter((record) => record.meal_type === mealType)
+              .map((record) => (
+                <Record key={record.id} record={record} />
+              ))}
+          </>
+        )}
       </div>
       <div className="meal_footer">
         <div className="nutrition">

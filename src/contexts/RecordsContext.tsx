@@ -8,6 +8,7 @@ type ValuesToShare = {
   addRecord: Function;
   deleteRecord: Function;
   updateRecord: Function;
+  areRecordsLoading: boolean;
 };
 
 export const RecordsContext = createContext<ValuesToShare>({
@@ -15,13 +16,18 @@ export const RecordsContext = createContext<ValuesToShare>({
   addRecord: () => {},
   updateRecord: () => {},
   deleteRecord: () => {},
+  areRecordsLoading: true,
 });
+
 export const RecordsProvider = (props: PropsWithChildren) => {
   const url = "https://calorie-counter-api.onrender.com/records";
+
   const { dateStr: currDateStr } = useParams();
-  const { data: records, setData: setRecords } = useFetch<Record[]>(
-    `${url}?date=${currDateStr}`
-  );
+  const {
+    data: records,
+    setData: setRecords,
+    isLoading: areRecordsLoading,
+  } = useFetch<Record[]>(`${url}?date=${currDateStr}`);
 
   // ADD RECORD
   const addRecord = async ({
@@ -143,6 +149,7 @@ export const RecordsProvider = (props: PropsWithChildren) => {
   const valuesToShare: ValuesToShare = {
     records,
     addRecord,
+    areRecordsLoading,
     updateRecord,
     deleteRecord,
   };
