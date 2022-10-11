@@ -2,7 +2,7 @@ export interface Record {
   id: string;
   date: string;
   meal_type: string;
-  dish: string;
+  dish?: string;
   ingredient: string;
   fats_per_100: number;
   carbs_per_100: number;
@@ -10,3 +10,7 @@ export interface Record {
   quantity: number;
   unit: "g" | "ml";
 }
+
+export type MealType = "breakfast" | "lunch" | "dinner";
+
+export type SizeUnit = "g" | "ml";

@@ -126,7 +126,7 @@ router.delete("/:id", async (req, res, next) => {
 });
 
 // DELETE ALL RECORDS
-router.delete("/", async (req, res, next) => {
+router.delete("/terminate-all", async (req, res, next) => {
   try {
     const recordsColl = app.locals.recordsColl;
     const result = await recordsColl.deleteMany({});

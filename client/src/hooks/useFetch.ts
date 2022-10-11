@@ -20,7 +20,7 @@ const useFetch = <T = unknown>(url: string) => {
     };
     getFetch();
   }, [url]);
-  return { data, isLoading, error };
+  return { data, setData, isLoading, error };
 };
 
 export default useFetch;

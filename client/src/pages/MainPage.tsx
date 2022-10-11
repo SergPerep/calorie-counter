@@ -1,16 +1,14 @@
 import Meal from "../components/Meal";
 import TotalCalories from "../components/TotalCalories";
 import { useParams } from "react-router-dom";
-import { Record as RecordInterface } from "../types";
 import calcTotalNutrition from "../utils/calcTotalNutrition";
 import date from "date-and-time";
 import Nav from "../components/Nav";
-import useFetch from "../hooks/useFetch";
+import { RecordsContext } from "../scss/contexts/RecordsContext";
+import { useContext } from "react";
 const MainPage = () => {
   const { dateStr: currDateStr } = useParams();
-  const { data: records } = useFetch<RecordInterface[]>(
-    `http://localhost:5000/records?date=${currDateStr}`
-  );
+  const { records } = useContext(RecordsContext);
 
   const {
     fats: totalFats,

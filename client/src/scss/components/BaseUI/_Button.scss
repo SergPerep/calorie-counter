@@ -13,3 +13,9 @@
     border: 1px solid colors.$black-a12;
     color: colors.$black-a60;
 }
+
+button:disabled {
+    background-color: colors.$black-a08;
+    color: colors.$black-a12;
+    cursor: unset;
+}

@@ -13,6 +13,7 @@ type InputProps = {
   hideLabel?: boolean;
   onChange: ChangeEventHandler<HTMLInputElement>;
   isDisabled?: boolean;
+  isValid?: boolean;
 };
 
 const Input = ({
@@ -28,10 +29,18 @@ const Input = ({
   value,
   onChange,
   isDisabled = false,
+  isValid = true,
 }: InputProps) => {
-  value = value || "";
+  const checkValue = (value: string | number) => {
+    if (typeof value === "number") {
+      if (isNaN(value)) return "";
+    }
+    return value;
+  };
+
+  value = checkValue(value);
+
   const [isFocused, setIsFocused] = useState(false);
-  const [isError, setIsError] = useState(false);
   const inputEl = useRef<HTMLInputElement>(null);
   const handleClickField = () => inputEl.current?.focus();
   return (
@@ -41,7 +50,7 @@ const Input = ({
       </label>
       <div
         className={`field ${isFocused ? "focused" : ""} ${
-          isError ? "error" : ""
+          isValid ? "" : "error"
         }`}
         onClick={handleClickField}
       >
@@ -59,7 +68,9 @@ const Input = ({
         />
         {suffix && <span className="suffix">{suffix}</span>}
       </div>
-      {hintStr && <div className={`hint ${isError && "error"}`}>{hintStr}</div>}
+      {hintStr && (
+        <div className={`hint ${!isValid && "error"}`}>{hintStr}</div>
+      )}
     </div>
   );
 };

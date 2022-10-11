@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
+import { RecordsContext } from "../scss/contexts/RecordsContext";
 import { Record as RecordInterface } from "../types";
 import calcEnergy from "../utils/calcEnergy";
 import roundNumber from "../utils/roundNumber";
@@ -9,6 +10,7 @@ const Record = ({ record }: { record: RecordInterface }) => {
   const [isContextMenuOpen, setIsContextMenuOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const moreEl = useRef<HTMLDivElement>(null);
+  const { deleteRecord } = useContext(RecordsContext);
   const quantity = record.quantity;
   const totalFatsNum = (record.fats_per_100 / 100) * quantity;
   const totalCarbsNum = (record.carbs_per_100 / 100) * quantity;
@@ -66,13 +68,11 @@ const Record = ({ record }: { record: RecordInterface }) => {
             menuButtons={[
               {
                 title: "Edit",
-                onClick: () => {
-                  setIsEditOpen(true);
-                },
+                onClick: () => setIsEditOpen(true),
               },
               {
                 title: "Delete",
-                onClick: () => {},
+                onClick: () => deleteRecord(record.id),
               },
             ]}
           />

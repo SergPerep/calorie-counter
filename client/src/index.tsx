@@ -10,6 +10,7 @@ import {
   redirect,
   RouterProvider,
 } from "react-router-dom";
+import { RecordsProvider } from "./scss/contexts/RecordsContext";
 
 const todayStr = date.format(today, "YYYY-MM-DD");
 const router = createBrowserRouter([
@@ -19,7 +20,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/:dateStr",
-    element: <MainPage />,
+    element: (
+      <RecordsProvider>
+        <MainPage />
+      </RecordsProvider>
+    ),
   },
 ]);
 
