@@ -5,8 +5,10 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "jest --silent --verbose --watch",
-    "dev": "concurrently \"tsc --watch\" \"nodemon dist/index.js\"",
-    "start": "node dist/app.js"
+    "build": "npm install && tsc && npm install --prefix client && npm run build --prefix client",
+    "start": "node dist/app.js",
+    "server": "concurrently \"tsc --watch\" \"nodemon dist/index.js\"",
+    "client": "npm start --prefix client"
   },
   "keywords": [],
   "author": "",
