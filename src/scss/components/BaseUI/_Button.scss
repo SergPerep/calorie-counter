@@ -1,11 +1,21 @@
 @use "../../sass-utils/colors";
 @use "../../sass-utils/fonts";
 .button {
-    padding: 3px 8px 1px;
+    padding: 2px 8px;
     @include fonts.small;
     color: white;
     background-color: colors.$success;
     border-radius: 4px;
+    .spinner {
+        padding: 0 12px;
+        svg {
+            width: 24px;
+            height: 24px;
+        }
+        .spinner-line {
+            stroke: white;
+        }
+    }
 }
 
 .button.secondary {

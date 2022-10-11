@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useEffect } from "react";
+import { createContext, PropsWithChildren, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useFetch from "../hooks/useFetch";
 import date from "date-and-time";
@@ -10,6 +10,9 @@ type ValuesToShare = {
   deleteRecord: Function;
   updateRecord: Function;
   areRecordsLoading: boolean;
+  isDeleting: boolean;
+  isUpdating: boolean;
+  isAdding: boolean;
 };
 
 export const RecordsContext = createContext<ValuesToShare>({
@@ -18,6 +21,9 @@ export const RecordsContext = createContext<ValuesToShare>({
   updateRecord: () => {},
   deleteRecord: () => {},
   areRecordsLoading: true,
+  isDeleting: false,
+  isUpdating: false,
+  isAdding: false,
 });
 
 export const RecordsProvider = (props: PropsWithChildren) => {
@@ -35,6 +41,10 @@ export const RecordsProvider = (props: PropsWithChildren) => {
     if (currDateStr && !date.isValid(currDateStr, "YYYY-MM-DD"))
       navigate("/404");
   });
+
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [isAdding, setIsAdding] = useState(false);
 
   // ADD RECORD
   const addRecord = async ({
@@ -57,6 +67,7 @@ export const RecordsProvider = (props: PropsWithChildren) => {
     selectedPerValue: SizeUnit;
   }) => {
     try {
+      setIsAdding(true);
       const body = {
         date: dateStr,
         meal_type: mealType,
@@ -81,6 +92,8 @@ export const RecordsProvider = (props: PropsWithChildren) => {
       return { statusCode, data };
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsAdding(false);
     }
   };
 
@@ -108,6 +121,7 @@ export const RecordsProvider = (props: PropsWithChildren) => {
     }
   ) => {
     try {
+      setIsUpdating(true);
       const body = {
         date: dateStr,
         meal_type: mealType,
@@ -135,12 +149,15 @@ export const RecordsProvider = (props: PropsWithChildren) => {
       return { statusCode, data };
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsUpdating(false);
     }
   };
 
   // DELETE A RECORD
   const deleteRecord = async (id: string) => {
     try {
+      setIsDeleting(true);
       const response = await fetch(`${url}/${id}`, {
         method: "DELETE",
       });
@@ -150,15 +167,20 @@ export const RecordsProvider = (props: PropsWithChildren) => {
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsDeleting(false);
     }
   };
 
   const valuesToShare: ValuesToShare = {
     records,
-    addRecord,
     areRecordsLoading,
+    addRecord,
+    isAdding,
     updateRecord,
+    isUpdating,
     deleteRecord,
+    isDeleting,
   };
   return (
     <RecordsContext.Provider value={valuesToShare}>

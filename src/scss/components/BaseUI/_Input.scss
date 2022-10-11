@@ -34,7 +34,7 @@
         border: none;
         background-color: transparent;
         padding: 6px 12px;
-        @include fonts.xsmall;
+        @include fonts.small;
         &:focus {
             outline: none;
         }

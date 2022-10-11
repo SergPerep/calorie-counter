@@ -11,6 +11,7 @@ import NutritionLegend from "./NutritionLegend";
 import { useParams } from "react-router-dom";
 import { RecordsContext } from "../contexts/RecordsContext";
 import calcTotalNutrition from "../utils/calcTotalNutrition";
+import Spinner from "./BaseUI/Spinner";
 
 const Edit = ({
   title = "Edit",
@@ -27,7 +28,9 @@ const Edit = ({
   mealType?: MealType;
   actionType: "updateRecord" | "addRecord";
 }) => {
-  const { updateRecord, addRecord } = useContext(RecordsContext);
+  const { updateRecord, addRecord, isUpdating, isAdding } =
+    useContext(RecordsContext);
+  const isLoading = isUpdating || isAdding;
   const { dateStr } = useParams();
   const [nameStr, setNameStr] = useState(record?.ingredient || "");
   const [selectedPerValue, setSelectedPerValue] = useState(record?.unit || "g");
@@ -244,7 +247,7 @@ const Edit = ({
         </div>
         <div className="edit-footer">
           <Button onClick={handleActionClick} isDisabled={isSaveButtonDisabled}>
-            {actionButtonName}
+            {!isLoading ? actionButtonName : <Spinner />}
           </Button>
           <Button type="secondary" onClick={onClose as MouseEventHandler}>
             Cancel
