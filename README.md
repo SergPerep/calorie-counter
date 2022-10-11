@@ -1,46 +1,22 @@
-# Getting Started with Create React App
+# Calorie counter
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Stores information about meals and calculates fats, carbs, proteins, and calories based on user input.
 
-## Available Scripts
+- Deployed project: [https://srgprp-calorie-counter.netlify.app](https://srgprp-calorie-counter.netlify.app)
+- API | [Source](https://github.com/SergPerep/calorie-counter-api)
 
-In the project directory, you can run:
+## Must have
 
-### `npm start`
+- Add, edit, and delete a food record
+- Store records in a database
+- Food record can be added to one of the three meals: breakfast, lunch, or dinner
+- Count total nutrition and calories for a meal and for a day
+- Select a day with a calendar
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Nice to have
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- Connect to another API that has food products with their nutrition values (e.g Open Food Facts API)
+- Authentication
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+Design is my own design.
+Every day has its own route.
