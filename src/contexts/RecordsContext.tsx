@@ -1,6 +1,7 @@
-import { createContext, PropsWithChildren } from "react";
-import { useParams } from "react-router-dom";
+import { createContext, PropsWithChildren, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import useFetch from "../hooks/useFetch";
+import date from "date-and-time";
 import { Record, MealType, SizeUnit } from "../types";
 
 type ValuesToShare = {
@@ -28,6 +29,12 @@ export const RecordsProvider = (props: PropsWithChildren) => {
     setData: setRecords,
     isLoading: areRecordsLoading,
   } = useFetch<Record[]>(`${url}?date=${currDateStr}`);
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (currDateStr && !date.isValid(currDateStr, "YYYY-MM-DD"))
+      navigate("/404");
+  });
 
   // ADD RECORD
   const addRecord = async ({

@@ -5,9 +5,10 @@ import reportWebVitals from "./reportWebVitals";
 import date from "date-and-time";
 import { today } from "./utils/days";
 import MainPage from "./pages/MainPage";
+import NotFoundPage from "./pages/NotFoundPage";
 import {
   createBrowserRouter,
-  redirect,
+  Navigate,
   RouterProvider,
 } from "react-router-dom";
 import { RecordsProvider } from "./contexts/RecordsContext";
@@ -16,7 +17,7 @@ const todayStr = date.format(today, "YYYY-MM-DD");
 const router = createBrowserRouter([
   {
     path: "/",
-    loader: () => redirect(`/${todayStr}`),
+    element: <Navigate to={`/${todayStr}`} />,
   },
   {
     path: "/:dateStr",
@@ -25,6 +26,14 @@ const router = createBrowserRouter([
         <MainPage />
       </RecordsProvider>
     ),
+  },
+  {
+    path: "/404",
+    element: <NotFoundPage />,
+  },
+  {
+    path: "/*",
+    element: <Navigate to="/404" />,
   },
 ]);
 

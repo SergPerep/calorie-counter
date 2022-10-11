@@ -11,7 +11,9 @@ const useFetch = <T = unknown>(url: string) => {
       try {
         const response = await fetch(url);
         const dataJSON = await response.json();
-        setData(dataJSON);
+        if (response.status === 200) {
+          setData(dataJSON);
+        }
       } catch (error) {
         setError(error);
       } finally {
