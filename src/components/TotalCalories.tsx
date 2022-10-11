@@ -1,7 +1,7 @@
 import calcTotalNutritionForRecords from "../utils/calcTotalNutritionForRecords";
 import roundNumber from "../utils/roundNumber";
 import { useContext } from "react";
-import { RecordsContext } from "../scss/contexts/RecordsContext";
+import { RecordsContext } from "../contexts/RecordsContext";
 
 const TotalCalories = () => {
   const { records } = useContext(RecordsContext);

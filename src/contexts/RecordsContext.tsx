@@ -1,7 +1,7 @@
 import { createContext, PropsWithChildren } from "react";
 import { useParams } from "react-router-dom";
-import useFetch from "../../hooks/useFetch";
-import { Record, MealType, SizeUnit } from "../../types";
+import useFetch from "../hooks/useFetch";
+import { Record, MealType, SizeUnit } from "../types";
 
 type ValuesToShare = {
   records: Record[] | undefined;

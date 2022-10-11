@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { RecordsContext } from "../scss/contexts/RecordsContext";
+import { RecordsContext } from "../contexts/RecordsContext";
 import { Record as RecordInterface } from "../types";
 import calcEnergy from "../utils/calcEnergy";
 import roundNumber from "../utils/roundNumber";

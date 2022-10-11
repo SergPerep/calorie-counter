@@ -9,7 +9,7 @@ import roundNumber from "../utils/roundNumber";
 import NutritionBar from "./NutritionBar";
 import NutritionLegend from "./NutritionLegend";
 import { useParams } from "react-router-dom";
-import { RecordsContext } from "../scss/contexts/RecordsContext";
+import { RecordsContext } from "../contexts/RecordsContext";
 import calcTotalNutrition from "../utils/calcTotalNutrition";
 
 const Edit = ({

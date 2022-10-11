@@ -3,7 +3,7 @@ import TotalCalories from "../components/TotalCalories";
 import { useParams } from "react-router-dom";
 import date from "date-and-time";
 import Nav from "../components/Nav";
-import { RecordsContext } from "../scss/contexts/RecordsContext";
+import { RecordsContext } from "../contexts/RecordsContext";
 import { useContext } from "react";
 const MainPage = () => {
   const { dateStr: currDateStr } = useParams();
