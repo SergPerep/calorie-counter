@@ -1,5 +1,6 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useState } from "react";
 import { RecordsContext } from "../contexts/RecordsContext";
+import useClickOutside from "../hooks/useClickOutside";
 import { Record as RecordInterface } from "../types";
 import calcEnergy from "../utils/calcEnergy";
 import roundNumber from "../utils/roundNumber";
@@ -7,9 +8,12 @@ import ContextMenu from "./BaseUI/ContextMenu";
 import Icon from "./BaseUI/Icon";
 import Edit from "./Edit";
 const Record = ({ record }: { record: RecordInterface }) => {
-  const [isContextMenuOpen, setIsContextMenuOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
-  const moreEl = useRef<HTMLDivElement>(null);
+  const {
+    ref: moreEl,
+    isOpen: isContextMenuOpen,
+    setIsOpen: setIsContextMenuOpen,
+  } = useClickOutside<HTMLDivElement>();
   const { deleteRecord } = useContext(RecordsContext);
   const quantity = record.quantity;
   const totalFatsNum = (record.fats_per_100 / 100) * quantity;
@@ -20,19 +24,6 @@ const Record = ({ record }: { record: RecordInterface }) => {
     totalCarbsNum,
     totalProteinsNum
   );
-
-  useEffect(() => {
-    const handleDocumentClick = (e: MouseEvent) => {
-      const target = e.target as Node;
-      if (moreEl.current && !moreEl.current.contains(target))
-        setIsContextMenuOpen(false);
-    };
-    if (isContextMenuOpen)
-      document.addEventListener("click", handleDocumentClick);
-    return () => {
-      document.removeEventListener("click", handleDocumentClick);
-    };
-  }, [isContextMenuOpen]);
 
   return (
     <div className="record" key={record.id}>
