@@ -47,40 +47,79 @@ const Edit = ({
       portionSizeNum
     );
 
-  const checkIfNumberFieldValid = (value: number): [boolean, string] => {
-    let isValid = true;
-    let hintStr = "";
-    if (value < 0) {
-      isValid = false;
-      hintStr = "Cannot be less than 0";
-    }
-    return [isValid, hintStr];
+  const validateNutritionInput = (
+    value: number | undefined
+  ): [boolean, string] => {
+    if (typeof value !== "number") value = 0;
+    if (value < 0) return [false, "Cannot be less than 0"];
+    if (value > 100) return [false, "Cannot be more than 100"];
+    return [true, ""];
   };
 
-  const [areFatsValid, fatsHintStr] = checkIfNumberFieldValid(
-    fatsPer100Num || 0
-  );
-  const [areProteinsValid, proteinsHintStr] = checkIfNumberFieldValid(
-    proteinsPer100Num || 0
-  );
-  const [areCarbsValid, carbsHintStr] = checkIfNumberFieldValid(
-    carbsPer100Num || 0
-  );
-  const [isPortionSizeValid, portionSizeHintStr] = checkIfNumberFieldValid(
-    portionSizeNum || 0
-  );
+  const validatePortionSizeInput = (
+    value: number | undefined
+  ): [boolean, string] => {
+    if (typeof value !== "number") value = 0;
+    if (value < 0) return [false, "Cannot be less than 0"];
+    if (value >= 1000)
+      return [false, "More than 1 kg? Do you really need that much?"];
+    return [true, ""];
+  };
 
-  const isSaveButtonDisabled =
-    nameStr &&
-    typeof fatsPer100Num === "number" &&
-    fatsPer100Num > 0 &&
-    typeof carbsPer100Num === "number" &&
-    carbsPer100Num > 0 &&
-    typeof proteinsPer100Num === "number" &&
-    proteinsPer100Num > 0 &&
-    portionSizeNum
-      ? false
-      : true;
+  const [isFatsInputValid, fatsHintStr] = validateNutritionInput(fatsPer100Num);
+  const [isProteinsInputValid, proteinsHintStr] =
+    validateNutritionInput(proteinsPer100Num);
+  const [isCarbsInputValid, carbsHintStr] =
+    validateNutritionInput(carbsPer100Num);
+  const [isPortionSizeInputValid, portionSizeHintStr] =
+    validatePortionSizeInput(portionSizeNum);
+
+  const validateAllFields = () => {
+    // NAME FIELD
+    const isNameStrValid = nameStr ? true : false;
+
+    // FATS FIELD
+    const areFatsValid =
+      isFatsInputValid && typeof fatsPer100Num === "number" ? true : false;
+
+    // CARBS FIELD
+    const areCarbsValid =
+      isCarbsInputValid && typeof carbsPer100Num === "number" ? true : false;
+
+    // PROTEINS FIELD
+    const areProteinsValid =
+      isProteinsInputValid && typeof proteinsPer100Num === "number"
+        ? true
+        : false;
+
+    // CHECK NUTRITION SUM
+    const isNutritionSumValid =
+      typeof fatsPer100Num === "number" &&
+      typeof carbsPer100Num === "number" &&
+      typeof proteinsPer100Num === "number" &&
+      fatsPer100Num + carbsPer100Num + proteinsPer100Num <= 100
+        ? true
+        : false;
+
+    // PORTION SIZE
+    const isPortionSizeValid =
+      isPortionSizeInputValid &&
+      typeof portionSizeNum === "number" &&
+      portionSizeNum !== 0
+        ? true
+        : false;
+
+    return (
+      isNameStrValid &&
+      areFatsValid &&
+      areCarbsValid &&
+      areProteinsValid &&
+      isNutritionSumValid &&
+      isPortionSizeValid
+    );
+  };
+
+  const isSaveButtonDisabled = !validateAllFields();
 
   const handleUpdateRecord = async () => {
     const body = {
@@ -169,7 +208,7 @@ const Edit = ({
             value={fatsPer100Num}
             onChange={(e) => setFatsNum(parseFloat(e.target.value))}
             hintStr={fatsHintStr}
-            isValid={areFatsValid}
+            isValid={isFatsInputValid}
           />
           <Input
             label={`Carbs (per 100 ${selectedPerValue})`}
@@ -180,7 +219,7 @@ const Edit = ({
             suffix="g"
             value={carbsPer100Num}
             onChange={(e) => setCarbsPer100Num(parseFloat(e.target.value))}
-            isValid={areCarbsValid}
+            isValid={isCarbsInputValid}
             hintStr={carbsHintStr}
           />
           <Input
@@ -192,7 +231,7 @@ const Edit = ({
             suffix="g"
             value={proteinsPer100Num}
             onChange={(e) => setProteinsPer100Num(parseFloat(e.target.value))}
-            isValid={areProteinsValid}
+            isValid={isProteinsInputValid}
             hintStr={proteinsHintStr}
           />
           <Input
@@ -221,7 +260,7 @@ const Edit = ({
             value={portionSizeNum}
             onChange={(e) => setPortionSizeNum(parseFloat(e.target.value))}
             hintStr={portionSizeHintStr}
-            isValid={isPortionSizeValid}
+            isValid={isPortionSizeInputValid}
           />
           <div className="edit-food-view">
             <div className="edit-food-view__header">
