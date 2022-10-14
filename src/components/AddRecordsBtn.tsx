@@ -1,4 +1,4 @@
-import Edit from "./Edit";
+import Edit from "./Edit/EditController";
 import { useState } from "react";
 import { MealType } from "../types";
 

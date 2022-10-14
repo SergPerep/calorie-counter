@@ -6,7 +6,7 @@ import calcEnergy from "../utils/calcEnergy";
 import roundNumber from "../utils/roundNumber";
 import ContextMenu from "./BaseUI/ContextMenu";
 import Icon from "./BaseUI/Icon";
-import Edit from "./Edit";
+import Edit from "./Edit/EditController";
 const Record = ({ record }: { record: RecordInterface }) => {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const {
