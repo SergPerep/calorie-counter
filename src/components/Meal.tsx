@@ -13,7 +13,9 @@ import { RecordsContext } from "../contexts/RecordsContext";
 const Meal = ({ title, mealType }: { title: string; mealType: MealType }) => {
   const { records, areRecordsLoading } = useContext(RecordsContext);
   const { totalFatsNum, totalCarbsNum, totalProteinsNum, totalEnergyNum } =
-    calcTotalNutritionForRecords(records);
+    calcTotalNutritionForRecords(
+      records?.filter((record) => record.meal_type === mealType)
+    );
   return (
     <div className="meal">
       <div className="meal_header">
