@@ -5,9 +5,9 @@ import { MealType, Record } from "../../types";
 import EditView from "./EditView";
 
 // VALIDATORS
-import validateNutrientInput from "./validateNutrientInput";
-import validateNutrientsSum from "./validateNutrientsSum";
-import validatePortionSizeInput from "./validatePortionSizeInput";
+import genNutrientError from "./genNutrientError";
+import genNutrientsSumError from "./genNutrientsSumError";
+import genPortionSizeError from "./genPortionSizeError";
 import validateAllFields from "./validateAllFields";
 
 // UTILS
@@ -43,26 +43,23 @@ const Edit = ({
   );
   const [portionSizeNum, setPortionSizeNum] = useState(record?.quantity);
 
-  // VALIDATE FIELDS
-  const [isFatsInputValid, fatsHintStr] = validateNutrientInput(fatsPer100Num);
-  const [isProteinsInputValid, proteinsHintStr] =
-    validateNutrientInput(proteinsPer100Num);
-  const [isCarbsInputValid, carbsHintStr] =
-    validateNutrientInput(carbsPer100Num);
-  const [isPortionSizeInputValid, portionSizeHintStr] =
-    validatePortionSizeInput(portionSizeNum);
+  // GENERATE ERRORS FOR INPUTS
+  const fatsErrStr = genNutrientError(fatsPer100Num);
+  const proteinsErrStr = genNutrientError(proteinsPer100Num);
+  const carbsErrStr = genNutrientError(carbsPer100Num);
+  const portionSizeErrStr = genPortionSizeError(portionSizeNum);
   const isSaveButtonDisabled = !validateAllFields({
     nameStr,
-    isFatsInputValid,
     fatsPer100Num,
-    isCarbsInputValid,
     carbsPer100Num,
-    isProteinsInputValid,
     proteinsPer100Num,
-    isPortionSizeInputValid,
+    fatsErrStr,
+    carbsErrStr,
+    proteinsErrStr,
+    portionSizeErrStr,
     portionSizeNum,
   });
-  const [isErrorDisplay, errorDisplayMessage] = validateNutrientsSum({
+  const errorDisplayMessage = genNutrientsSumError({
     fatsPer100Num,
     carbsPer100Num,
     proteinsPer100Num,
@@ -123,26 +120,21 @@ const Edit = ({
         selectedPerValue,
         setSelectedPerValue,
         fatsPer100Num,
-        fatsHintStr,
-        isFatsInputValid,
+        fatsErrStr,
         setFatsNum,
         carbsPer100Num,
         setCarbsPer100Num,
-        isCarbsInputValid,
-        carbsHintStr,
+        carbsErrStr,
         proteinsPer100Num,
         setProteinsPer100Num,
-        isProteinsInputValid,
-        proteinsHintStr,
+        proteinsErrStr,
         portionSizeNum,
         setPortionSizeNum,
-        portionSizeHintStr,
-        isPortionSizeInputValid,
+        portionSizeErrStr,
         handleActionClick,
         isSaveButtonDisabled,
         isLoading,
         actionButtonName,
-        isErrorDisplay,
         errorDisplayMessage,
       }}
     />

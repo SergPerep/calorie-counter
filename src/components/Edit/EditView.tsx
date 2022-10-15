@@ -1,11 +1,9 @@
-// UI
 import Button from "../BaseUI/Button";
 import Icon from "../BaseUI/Icon";
 import Input from "../BaseUI/Input";
 import Select from "../BaseUI/Select";
 import Spinner from "../BaseUI/Spinner";
 import { MouseEventHandler } from "react";
-
 import RecordDisplay from "./RecordDisplay";
 import calcEnergy from "../../utils/calcEnergy";
 import roundNumber from "../../utils/roundNumber";
@@ -20,26 +18,21 @@ const EditView = ({
   selectedPerValue,
   setSelectedPerValue,
   fatsPer100Num,
-  fatsHintStr,
-  isFatsInputValid,
+  fatsErrStr,
   setFatsNum,
   carbsPer100Num,
   setCarbsPer100Num,
-  isCarbsInputValid,
-  carbsHintStr,
+  carbsErrStr,
   proteinsPer100Num,
   setProteinsPer100Num,
-  isProteinsInputValid,
-  proteinsHintStr,
+  proteinsErrStr,
   portionSizeNum,
   setPortionSizeNum,
-  portionSizeHintStr,
-  isPortionSizeInputValid,
+  portionSizeErrStr,
   handleActionClick,
   isSaveButtonDisabled,
   isLoading,
   actionButtonName,
-  isErrorDisplay,
   errorDisplayMessage,
 }: {
   title: string;
@@ -49,26 +42,21 @@ const EditView = ({
   selectedPerValue: SizeUnit;
   setSelectedPerValue: Function;
   fatsPer100Num: number | undefined;
-  fatsHintStr: string | undefined;
-  isFatsInputValid: boolean;
+  fatsErrStr: string;
   setFatsNum: Function;
   carbsPer100Num: number | undefined;
   setCarbsPer100Num: Function;
-  isCarbsInputValid: boolean;
-  carbsHintStr: string | undefined;
+  carbsErrStr: string;
   proteinsPer100Num: number | undefined;
   setProteinsPer100Num: Function;
-  isProteinsInputValid: boolean;
-  proteinsHintStr: string | undefined;
+  proteinsErrStr: string;
   portionSizeNum: number | undefined;
   setPortionSizeNum: Function;
-  portionSizeHintStr: string | undefined;
-  isPortionSizeInputValid: boolean;
+  portionSizeErrStr: string;
   handleActionClick: MouseEventHandler;
   isSaveButtonDisabled: boolean;
   isLoading: boolean;
   actionButtonName: string | undefined;
-  isErrorDisplay: boolean;
   errorDisplayMessage: string;
 }) => {
   return (
@@ -113,8 +101,8 @@ const EditView = ({
             suffix="g"
             value={fatsPer100Num}
             onChange={(e) => setFatsNum(parseFloat(e.target.value))}
-            hintStr={fatsHintStr}
-            isValid={isFatsInputValid}
+            hintStr={fatsErrStr}
+            isValid={!fatsErrStr}
           />
           <Input
             label={`Carbs (per 100 ${selectedPerValue})`}
@@ -125,8 +113,8 @@ const EditView = ({
             suffix="g"
             value={carbsPer100Num}
             onChange={(e) => setCarbsPer100Num(parseFloat(e.target.value))}
-            isValid={isCarbsInputValid}
-            hintStr={carbsHintStr}
+            hintStr={carbsErrStr}
+            isValid={!carbsErrStr}
           />
           <Input
             label={`Proteins (per 100 ${selectedPerValue})`}
@@ -137,8 +125,8 @@ const EditView = ({
             suffix="g"
             value={proteinsPer100Num}
             onChange={(e) => setProteinsPer100Num(parseFloat(e.target.value))}
-            isValid={isProteinsInputValid}
-            hintStr={proteinsHintStr}
+            isValid={!proteinsErrStr}
+            hintStr={proteinsErrStr}
           />
           <Input
             label={`Energy (per 100 ${selectedPerValue})`}
@@ -154,7 +142,9 @@ const EditView = ({
             onChange={() => {}}
             isDisabled={true}
           />
-          {isErrorDisplay && <ErrorDisplay>{errorDisplayMessage}</ErrorDisplay>}
+          {errorDisplayMessage && (
+            <ErrorDisplay>{errorDisplayMessage}</ErrorDisplay>
+          )}
 
           <h3>Portion size</h3>
           <Input
@@ -167,8 +157,8 @@ const EditView = ({
             suffix={selectedPerValue}
             value={portionSizeNum}
             onChange={(e) => setPortionSizeNum(parseFloat(e.target.value))}
-            hintStr={portionSizeHintStr}
-            isValid={isPortionSizeInputValid}
+            hintStr={portionSizeErrStr}
+            isValid={!portionSizeErrStr}
           />
           <RecordDisplay
             {...{

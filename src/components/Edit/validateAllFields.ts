@@ -1,22 +1,22 @@
 const validateAllFields = ({
   nameStr,
-  isFatsInputValid,
   fatsPer100Num,
-  isCarbsInputValid,
   carbsPer100Num,
-  isProteinsInputValid,
   proteinsPer100Num,
-  isPortionSizeInputValid,
+  fatsErrStr,
+  carbsErrStr,
+  proteinsErrStr,
+  portionSizeErrStr,
   portionSizeNum,
 }: {
   nameStr: string | undefined;
-  isFatsInputValid: boolean;
   fatsPer100Num: number | undefined;
-  isCarbsInputValid: boolean;
   carbsPer100Num: number | undefined;
-  isProteinsInputValid: boolean;
   proteinsPer100Num: number | undefined;
-  isPortionSizeInputValid: boolean;
+  fatsErrStr: string;
+  carbsErrStr: string;
+  proteinsErrStr: string;
+  portionSizeErrStr: string;
   portionSizeNum: number | undefined;
 }) => {
   // NAME FIELD
@@ -24,17 +24,15 @@ const validateAllFields = ({
 
   // FATS FIELD
   const areFatsValid =
-    isFatsInputValid && typeof fatsPer100Num === "number" ? true : false;
+    !fatsErrStr && typeof fatsPer100Num === "number" ? true : false;
 
   // CARBS FIELD
   const areCarbsValid =
-    isCarbsInputValid && typeof carbsPer100Num === "number" ? true : false;
+    !carbsErrStr && typeof carbsPer100Num === "number" ? true : false;
 
   // PROTEINS FIELD
   const areProteinsValid =
-    isProteinsInputValid && typeof proteinsPer100Num === "number"
-      ? true
-      : false;
+    !proteinsErrStr && typeof proteinsPer100Num === "number" ? true : false;
 
   // CHECK NUTRIENTS SUM
   const isNutrientsSum =
@@ -47,7 +45,7 @@ const validateAllFields = ({
 
   // PORTION SIZE
   const isPortionSizeValid =
-    isPortionSizeInputValid &&
+    !portionSizeErrStr &&
     typeof portionSizeNum === "number" &&
     portionSizeNum !== 0
       ? true
