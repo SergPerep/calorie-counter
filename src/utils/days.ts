@@ -1,6 +1,5 @@
 import date from "date-and-time";
-export let today = new Date();
-today.setHours(0);
-today.setMinutes(0);
-today.setSeconds(0);
-export const tomorrow = date.addDays(today, 1);
+export const todayDate = new Date();
+export const todayStr = date.format(todayDate, "YYYY-MM-DD");
+export const tomorrowDate = date.addDays(todayDate, 1);
+export const tomorrowStr = date.format(tomorrowDate, "YYYY-MM-DD");

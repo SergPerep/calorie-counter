@@ -2,8 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./scss/style.scss";
 import reportWebVitals from "./reportWebVitals";
-import date from "date-and-time";
-import { today } from "./utils/days";
+import { todayStr } from "./utils/days";
 import MainPage from "./pages/MainPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import {
@@ -13,7 +12,6 @@ import {
 } from "react-router-dom";
 import { RecordsProvider } from "./contexts/RecordsContext";
 
-const todayStr = date.format(today, "YYYY-MM-DD");
 const router = createBrowserRouter([
   {
     path: "/",

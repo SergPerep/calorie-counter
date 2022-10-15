@@ -1,20 +1,16 @@
 import Meal from "../components/Meal";
 import TotalCalories from "../components/TotalCalories";
 import { useParams } from "react-router-dom";
-import date from "date-and-time";
 import Nav from "../components/Nav";
+import formatDateStrToReadable from "../utils/formatDateStrToReadable";
 const MainPage = () => {
   const { dateStr: currDateStr } = useParams();
-
   return (
     <>
       <Nav selectedDateStr={currDateStr || ""} />
       <main>
         <div className="container">
-          <h1>
-            {currDateStr &&
-              date.transform(currDateStr, "YYYY-MM-DD", "DD MMMM YYYY")}
-          </h1>
+          <h1>{currDateStr && formatDateStrToReadable(currDateStr)}</h1>
           <div className="day-calories-container">
             <div className="meals-wrapper">
               <Meal title="Breakfast" mealType="breakfast" />

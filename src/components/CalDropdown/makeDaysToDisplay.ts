@@ -1,5 +1,5 @@
 import date from "date-and-time";
-import { today } from "../../utils/days";
+import { todayDate } from "../../utils/days";
 
 // Makes an array that will be used to render calendar grid
 
@@ -28,7 +28,7 @@ const makeDaysToDisplay = (startOfTheMonthStr: string) => {
   // Calendar going to have 42 cells
   for (let i = 0; i < 42; i++) {
     const dateObj = date.addDays(startOfCalGrid, i);
-    const isToday = date.isSameDay(dateObj, today);
+    const isToday = date.isSameDay(dateObj, todayDate);
     const isThisMonth = dateObj.getMonth() === monthIndex;
 
     arr.push({
