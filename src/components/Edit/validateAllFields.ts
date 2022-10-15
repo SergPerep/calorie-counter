@@ -36,8 +36,8 @@ const validateAllFields = ({
       ? true
       : false;
 
-  // CHECK NUTRITION SUM
-  const isNutritionSumValid =
+  // CHECK NUTRIENTS SUM
+  const isNutrientsSum =
     typeof fatsPer100Num === "number" &&
     typeof carbsPer100Num === "number" &&
     typeof proteinsPer100Num === "number" &&
@@ -58,7 +58,7 @@ const validateAllFields = ({
     areFatsValid &&
     areCarbsValid &&
     areProteinsValid &&
-    isNutritionSumValid &&
+    isNutrientsSum &&
     isPortionSizeValid
   );
 };
