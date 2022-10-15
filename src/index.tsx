@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./scss/style.scss";
 import reportWebVitals from "./reportWebVitals";
-import { todayStr } from "./utils/days";
+import { todayStr, tomorrowStr } from "./utils/days";
 import MainPage from "./pages/MainPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import {
@@ -15,7 +15,15 @@ import { RecordsProvider } from "./contexts/RecordsContext";
 const router = createBrowserRouter([
   {
     path: "/",
+    element: <Navigate to="/today" />,
+  },
+  {
+    path: "/today",
     element: <Navigate to={`/${todayStr}`} />,
+  },
+  {
+    path: "/tomorrow",
+    element: <Navigate to={`/${tomorrowStr}`} />,
   },
   {
     path: "/:dateStr",
