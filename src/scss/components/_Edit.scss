@@ -98,3 +98,13 @@
         margin: 4px 0 4px;
     }
 }
+
+.edit-error-display {
+    border: 1px solid rgba(colors.$error, 0.8);
+    border-radius: 8px;
+    background-color: rgba(colors.$error, 0.08);
+    padding: 12px;
+    width: 100%;
+    margin: 8px 0 4px;
+    color: darken(colors.$error, 16);
+}

@@ -10,6 +10,7 @@ import RecordDisplay from "./RecordDisplay";
 import calcEnergy from "../../utils/calcEnergy";
 import roundNumber from "../../utils/roundNumber";
 import { SizeUnit } from "../../types";
+import ErrorDisplay from "./ErrorDisplay";
 
 const EditView = ({
   title,
@@ -38,6 +39,8 @@ const EditView = ({
   isSaveButtonDisabled,
   isLoading,
   actionButtonName,
+  isErrorDisplay,
+  errorDisplayMessage,
 }: {
   title: string;
   onClose: Function;
@@ -65,6 +68,8 @@ const EditView = ({
   isSaveButtonDisabled: boolean;
   isLoading: boolean;
   actionButtonName: string | undefined;
+  isErrorDisplay: boolean;
+  errorDisplayMessage: string;
 }) => {
   return (
     <div className="overlay edit-overlay">
@@ -149,6 +154,8 @@ const EditView = ({
             onChange={() => {}}
             isDisabled={true}
           />
+          {isErrorDisplay && <ErrorDisplay>{errorDisplayMessage}</ErrorDisplay>}
+
           <h3>Portion size</h3>
           <Input
             label="Portion size"

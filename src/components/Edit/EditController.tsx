@@ -11,6 +11,7 @@ import validateAllFields from "./validateAllFields";
 
 // UTILS
 import roundNumber from "../../utils/roundNumber";
+import validateNutritionSum from "./validateNutritionSum";
 
 const Edit = ({
   title = "Edit",
@@ -60,6 +61,11 @@ const Edit = ({
     proteinsPer100Num,
     isPortionSizeInputValid,
     portionSizeNum,
+  });
+  const [isErrorDisplay, errorDisplayMessage] = validateNutritionSum({
+    fatsPer100Num,
+    carbsPer100Num,
+    proteinsPer100Num,
   });
 
   // HANDLE UPDATE/ADD RECORD
@@ -136,6 +142,8 @@ const Edit = ({
         isSaveButtonDisabled,
         isLoading,
         actionButtonName,
+        isErrorDisplay,
+        errorDisplayMessage,
       }}
     />
   );
