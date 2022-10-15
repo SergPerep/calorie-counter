@@ -1,26 +1,15 @@
 import Icon from "../BaseUI/Icon";
 import date from "date-and-time";
 import Calendar from "./Calendar";
-import { useEffect, useRef, useState } from "react";
+import useClickOutside from "../../hooks/useClickOutside";
 
 const CalDropDown = ({ selectedDateStr }: { selectedDateStr: string }) => {
-  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const handleClickDisplay = () => setIsCalendarOpen(!isCalendarOpen);
-  const calendarDropdownEl = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const handleClickDocument = (e: MouseEvent) => {
-      const target = e.target as Node;
-      if (
-        calendarDropdownEl.current &&
-        !calendarDropdownEl.current.contains(target)
-      )
-        setIsCalendarOpen(false);
-    };
-    if (isCalendarOpen) document.addEventListener("click", handleClickDocument);
-    return () => {
-      document.removeEventListener("click", handleClickDocument);
-    };
-  }, [isCalendarOpen]);
+  const {
+    ref: calendarDropdownEl,
+    isOpen: isCalendarOpen,
+    setIsOpen: setIsCalendarOpen,
+  } = useClickOutside<HTMLDivElement>();
   return (
     <div className="calendar-dropdown" ref={calendarDropdownEl}>
       <button
