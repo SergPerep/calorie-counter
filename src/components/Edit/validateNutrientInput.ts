@@ -1,4 +1,4 @@
-const validateNutritionInput = (
+const validateNutrientInput = (
   value: number | undefined
 ): [boolean, string] => {
   if (typeof value !== "number") value = 0;
@@ -7,4 +7,4 @@ const validateNutritionInput = (
   return [true, ""];
 };
 
-export default validateNutritionInput;
+export default validateNutrientInput;

@@ -5,13 +5,13 @@ import { MealType, Record } from "../../types";
 import EditView from "./EditView";
 
 // VALIDATORS
-import validateNutritionInput from "./validateNutritionInput";
+import validateNutrientInput from "./validateNutrientInput";
+import validateNutrientsSum from "./validateNutrientsSum";
 import validatePortionSizeInput from "./validatePortionSizeInput";
 import validateAllFields from "./validateAllFields";
 
 // UTILS
 import roundNumber from "../../utils/roundNumber";
-import validateNutritionSum from "./validateNutritionSum";
 
 const Edit = ({
   title = "Edit",
@@ -44,11 +44,11 @@ const Edit = ({
   const [portionSizeNum, setPortionSizeNum] = useState(record?.quantity);
 
   // VALIDATE FIELDS
-  const [isFatsInputValid, fatsHintStr] = validateNutritionInput(fatsPer100Num);
+  const [isFatsInputValid, fatsHintStr] = validateNutrientInput(fatsPer100Num);
   const [isProteinsInputValid, proteinsHintStr] =
-    validateNutritionInput(proteinsPer100Num);
+    validateNutrientInput(proteinsPer100Num);
   const [isCarbsInputValid, carbsHintStr] =
-    validateNutritionInput(carbsPer100Num);
+    validateNutrientInput(carbsPer100Num);
   const [isPortionSizeInputValid, portionSizeHintStr] =
     validatePortionSizeInput(portionSizeNum);
   const isSaveButtonDisabled = !validateAllFields({
@@ -62,7 +62,7 @@ const Edit = ({
     isPortionSizeInputValid,
     portionSizeNum,
   });
-  const [isErrorDisplay, errorDisplayMessage] = validateNutritionSum({
+  const [isErrorDisplay, errorDisplayMessage] = validateNutrientsSum({
     fatsPer100Num,
     carbsPer100Num,
     proteinsPer100Num,

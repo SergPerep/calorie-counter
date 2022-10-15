@@ -1,4 +1,4 @@
-const validateNutritionSum = ({
+const validateNutrientsSum = ({
   fatsPer100Num,
   carbsPer100Num,
   proteinsPer100Num,
@@ -15,4 +15,4 @@ const validateNutritionSum = ({
   return [false, ""];
 };
 
-export default validateNutritionSum;
+export default validateNutrientsSum;
