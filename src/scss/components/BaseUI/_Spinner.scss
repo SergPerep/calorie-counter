@@ -9,8 +9,8 @@ $outer-rotation-speed: 1.4s;
 $pi: 3.14;
 //Formulas
 $C: 2 * $pi * $r; //length of circle
-$l01: $pi * $r * $arc01 / 180deg; // length of the short line
-$l02: $pi * $r * $arc02 / 180deg; // length of the long line
+$l01: calc($pi * $r * $arc01 / 180deg); // length of the short line
+$l02: calc($pi * $r * $arc02 / 180deg); // length of the long line
 $e: $C - $l01; // dash step for stroke-dasharray property
 $alpha: 360deg - $arc02 + $arc01 - 90deg; // angle of turn that had to be made to return line to the original position
 $offset: $l01 - $l02; // length of offset for stroke-dashoffset property
