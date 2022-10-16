@@ -2,49 +2,17 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./scss/style.scss";
 import reportWebVitals from "./reportWebVitals";
-import { todayStr, tomorrowStr } from "./utils/days";
-import MainPage from "./pages/MainPage";
-import NotFoundPage from "./pages/NotFoundPage";
-import {
-  createBrowserRouter,
-  Navigate,
-  RouterProvider,
-} from "react-router-dom";
-import { RecordsProvider } from "./contexts/RecordsContext";
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Navigate to="/today" />,
-  },
-  {
-    path: "/today",
-    element: <Navigate to={`/${todayStr}`} />,
-  },
-  {
-    path: "/tomorrow",
-    element: <Navigate to={`/${tomorrowStr}`} />,
-  },
-  {
-    path: "/:dateStr",
-    element: (
-      <RecordsProvider>
-        <MainPage />
-      </RecordsProvider>
-    ),
-  },
-  {
-    path: "*",
-    element: <NotFoundPage />,
-  },
-]);
+import App from "./App";
+import { BrowserRouter } from "react-router-dom";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </React.StrictMode>
 );
 
