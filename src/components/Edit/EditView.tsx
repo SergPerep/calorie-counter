@@ -60,8 +60,13 @@ const EditView = ({
   errorDisplayMessage: string;
 }) => {
   return (
-    <div className="overlay edit-overlay">
-      <div className="edit">
+    <div className="overlay edit-overlay" onClick={() => onClose()}>
+      <div
+        className="edit"
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
         <div className="edit-header">
           <div className="edit-title">{title}</div>
           <button

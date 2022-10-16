@@ -6,7 +6,7 @@ import calcEnergy from "../utils/calcEnergy";
 import roundNumber from "../utils/roundNumber";
 import ContextMenu from "./BaseUI/ContextMenu";
 import Icon from "./BaseUI/Icon";
-import Edit from "./Edit/EditController";
+import EditController from "./Edit/EditController";
 const Record = ({ record }: { record: RecordInterface }) => {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const {
@@ -59,18 +59,24 @@ const Record = ({ record }: { record: RecordInterface }) => {
             menuButtons={[
               {
                 title: "Edit",
-                onClick: () => setIsEditOpen(true),
+                onClick: () => {
+                  setIsEditOpen(true);
+                  setIsContextMenuOpen(false);
+                },
               },
               {
                 title: "Delete",
-                onClick: () => deleteRecord(record.id),
+                onClick: () => {
+                  deleteRecord(record.id);
+                  setIsContextMenuOpen(false);
+                },
               },
             ]}
           />
         )}
       </div>
       {isEditOpen && (
-        <Edit
+        <EditController
           title="Edit"
           actionButtonName="Save changes"
           record={record}
