@@ -38,8 +38,7 @@ export const RecordsProvider = (props: PropsWithChildren) => {
 
   const navigate = useNavigate();
   useEffect(() => {
-    if (currDateStr && !date.isValid(currDateStr, "YYYY-MM-DD"))
-      navigate("/404");
+    if (currDateStr && !date.isValid(currDateStr, "YYYY-MM-DD")) navigate("*");
   });
 
   const [isDeleting, setIsDeleting] = useState(false);
