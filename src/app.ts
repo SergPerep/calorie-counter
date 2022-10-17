@@ -9,23 +9,27 @@ dotenv.config();
 
 const app = express();
 
+const { NODE_ENV = "development" } = process.env;
+
 app.use(cors());
 app.use(logRequests);
 app.use(express.json());
 
+// Static content when production
+if (NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../client/build")));
+}
+
+// ROUTES
 app.use("/records", recordsAPI);
 
 // Return index.html with first request
 app.get("/*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/build/index.html"), (err) => {
-    if (err) res.status(500).send(err);
-  });
-});
-
-// Catch call
-app.get("*", (req, res) => {
-  // Feedback to client
-  res.json("404. Sorry couldn't find the page.");
+  if (NODE_ENV === "production")
+    res.sendFile(path.join(__dirname, "../client/build/index.html"), (err) => {
+      if (err) res.status(500).send(err);
+    });
+  res.status(200).json({ message: "development build" });
 });
 
 app.use(handleErrors);
