@@ -4,6 +4,7 @@ import recordsAPI from "./components/records/recordsAPI";
 import handleErrors from "./components/errors/handleErrors";
 import cors from "cors";
 import dotenv from "dotenv";
+import path from "path";
 dotenv.config();
 
 const app = express();
@@ -14,14 +15,11 @@ app.use(express.json());
 
 app.use("/records", recordsAPI);
 
-app.get("/", (req, res) => {
-  res.writeHead(200, { "Content-Type": "text/html" });
-  res.write("<h1>Calorie Counter API</h1>");
-  res.end();
-});
-
-app.get("/hello", (req, res) => {
-  res.send("Hello");
+// Return index.html with first request
+app.get("/*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/build/index.html"), (err) => {
+    if (err) res.status(500).send(err);
+  });
 });
 
 // Catch call
