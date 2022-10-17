@@ -2,15 +2,18 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "functions/app.js",
+  "main": "dist/index.js",
+  "engines" : {
+    "node": "v16.14.0",
+    "npm": "8.3.1"
+  },
   "scripts": {
-    "test": "jest --silent --verbose --watch",
     "build": "npm install && tsc",
-    "start": "node dist/app.js",
+    "heroku-postbuild": "tsc && npm install --prefix client && npm run build --prefix client",
+    "start": "node .",
     "server": "concurrently \"tsc --watch\" \"nodemon dist/index.js\"",
-    "client": "npm start --prefix client",
-    "start:lambda": "netlify-lambda serve dist",
-    "build:lambda": "netlify-lambda build dist"
+    "client": "npm start --prefix client"
+    
   },
   "keywords": [],
   "author": "",

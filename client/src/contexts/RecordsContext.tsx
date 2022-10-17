@@ -27,7 +27,7 @@ export const RecordsContext = createContext<ValuesToShare>({
 });
 
 export const RecordsProvider = (props: PropsWithChildren) => {
-  const url = "https://calorie-counter-api.onrender.com/records";
+  const url = "/records";
 
   const { dateStr: currDateStr } = useParams();
   const {

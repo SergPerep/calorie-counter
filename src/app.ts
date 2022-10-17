@@ -24,6 +24,12 @@ app.get("/hello", (req, res) => {
   res.send("Hello");
 });
 
+// Catch call
+app.get("*", (req, res) => {
+  // Feedback to client
+  res.json("404. Sorry couldn't find the page.");
+});
+
 app.use(handleErrors);
 
 export default app;
