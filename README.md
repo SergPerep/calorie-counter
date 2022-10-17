@@ -2,9 +2,6 @@
 
 Stores information about meals and calculates fats, carbs, proteins, and calories based on user input.
 
-- Deployed project: [https://srgprp-calorie-counter.netlify.app](https://srgprp-calorie-counter.netlify.app)
-- API | [Source](https://github.com/SergPerep/calorie-counter-api)
-
 ## Must have
 
 - Add, edit, and delete a food record
