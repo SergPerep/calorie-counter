@@ -1,5 +1,13 @@
 import sc from "../../utils/statusCodes";
 // Use these to specify behavior of custom error handler middleware
+
+const getNameAndValue = <T = string>(obj: {
+  [key: string]: T;
+}): [string, T] => {
+  const name = Object.keys(obj)[0];
+  const value = obj[name];
+  return [name, value];
+};
 export class AppError extends Error {
   statusCode: number;
   constructor(
@@ -43,6 +51,17 @@ export class CannotBeNegativeError extends AppError {
       `'${propName}' cannot be negative. Got ${propValue}`,
       sc.BAD_REQUEST,
       "CannotBeNegativeError"
+    );
+  }
+}
+
+export class CannotBeGreaterError extends AppError {
+  constructor(obj: { [key: string]: number }, topLimit: number) {
+    const [propName, propVal] = getNameAndValue(obj);
+    super(
+      `'${propName}' cannot be greater than ${topLimit}. Instead received ${propVal}`,
+      sc.BAD_REQUEST,
+      "CannotBeGreaterError"
     );
   }
 }

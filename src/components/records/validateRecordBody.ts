@@ -1,5 +1,6 @@
 import {
   AppError,
+  CannotBeGreaterError,
   CannotBeNegativeError,
   EmptyFieldError,
   WrongTypeError,
@@ -84,6 +85,7 @@ const validateRecordBody = (record: Record) => {
   if (typeof quantity !== "number")
     throw new WrongTypeError("quantity", quantity, "number");
   if (quantity < 0) throw new CannotBeNegativeError("quantity", quantity);
+  if (quantity > 1000) throw new CannotBeGreaterError({ quantity }, 1000);
 
   // UNIT
   if (!unit) throw new EmptyFieldError("unit");
