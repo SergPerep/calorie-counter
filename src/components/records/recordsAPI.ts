@@ -10,6 +10,8 @@ import {
 } from "../errors/appErrors";
 import validateDateString from "./validateDateString";
 import validateRecordBody from "./validateRecordBody";
+import dotenv from "dotenv";
+dotenv.config();
 
 // GET RECORDS FOR A DATE
 router.get("/", async (req, res, next) => {
@@ -113,17 +115,21 @@ router.put("/:id", async (req, res, next) => {
   }
 });
 
+const { TERMINATE_RECORDS_ROUTE } = process.env;
+
 // DELETE ALL RECORDS
-router.delete("/terminate-all", async (req, res, next) => {
-  try {
-    const recordsColl = app.locals.recordsColl;
-    const result = await recordsColl.deleteMany({});
-    if (result.deletedCount === 0) throw new AppError("Nothing was deleted");
-    res.status(sc.OK).json({ message: "All records have been deleted" });
-  } catch (error) {
-    next(error);
-  }
-});
+if (TERMINATE_RECORDS_ROUTE) {
+  router.delete(`/${TERMINATE_RECORDS_ROUTE}`, async (req, res, next) => {
+    try {
+      const recordsColl = app.locals.recordsColl;
+      const result = await recordsColl.deleteMany({});
+      if (result.deletedCount === 0) throw new AppError("Nothing was deleted");
+      res.status(sc.OK).json({ message: "All records have been deleted" });
+    } catch (error) {
+      next(error);
+    }
+  });
+}
 
 // DELETE A RECORD
 router.delete("/:id", async (req, res, next) => {
