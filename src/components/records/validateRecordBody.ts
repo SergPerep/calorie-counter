@@ -54,19 +54,30 @@ const validateRecordBody = (record: Record) => {
     throw new WrongTypeError("ingredient", ingredient, "string");
 
   // FATS, CARBS && PROTEINS
-  const nutritionFields = [
+  const nutrientFields = [
     { fieldName: "fats_per_100", fieldValue: fats_per_100 },
     { fieldName: "carbs_per_100", fieldValue: carbs_per_100 },
     { fieldName: "proteins_per_100", fieldValue: proteins_per_100 },
   ];
-  nutritionFields.forEach((field) => {
+  nutrientFields.forEach((field) => {
     const { fieldName, fieldValue } = field;
     if (fieldValue === null || fieldValue === undefined)
       throw new EmptyFieldError(fieldName);
     if (typeof fieldValue !== "number")
       throw new WrongTypeError(fieldName, fieldValue, "number");
     if (fieldValue < 0) throw new CannotBeNegativeError(fieldName, fieldValue);
+    if (fieldValue > 100)
+      throw new AppError(
+        `'${fieldName}' cannot be greater than 100. Instead received ${fieldValue}`,
+        sc.BAD_REQUEST,
+        "CannotBeGreater"
+      );
   });
+  if (fats_per_100 + carbs_per_100 + proteins_per_100 > 100)
+    throw new AppError(
+      "Sum of nutrients (fats, carbs and proteins) cannot be greater than 100",
+      sc.BAD_REQUEST
+    );
 
   // QUANTITY
   if (!quantity) throw new EmptyFieldError("quantity");

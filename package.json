@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
-  "engines" : {
+  "engines": {
     "node": "v16.14.0",
     "npm": "8.3.1"
   },
@@ -13,7 +13,6 @@
     "start": "node .",
     "server": "concurrently \"tsc --watch\" \"nodemon dist/index.js\"",
     "client": "npm start --prefix client"
-    
   },
   "keywords": [],
   "author": "",
