@@ -76,16 +76,13 @@ const validateRecordBody = (record: Record) => {
     if (fieldValue < 0)
       throw new CannotBeNegativeError({ [fieldName]: fieldValue });
     if (fieldValue > 100)
-      throw new AppError(
-        `'${fieldName}' cannot be greater than 100. Instead received ${fieldValue}`,
-        sc.BAD_REQUEST,
-        "CannotBeGreater"
-      );
+      throw new CannotBeGreaterError({ [fieldName]: fieldValue }, 100);
   });
   if (fats_per_100 + carbs_per_100 + proteins_per_100 > 100)
     throw new AppError(
       "Sum of nutrients (fats, carbs and proteins) cannot be greater than 100",
-      sc.BAD_REQUEST
+      sc.BAD_REQUEST,
+      "CannotBeGreaterError"
     );
 
   // QUANTITY
