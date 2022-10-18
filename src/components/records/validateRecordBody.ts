@@ -35,9 +35,9 @@ const validateRecordBody = (record: Record) => {
   validateDateString(date);
 
   // MEAL TYPE
-  if (!meal_type) throw new EmptyFieldError("meal_type");
+  if (!meal_type) throw new EmptyFieldError({ meal_type });
   if (typeof meal_type !== "string")
-    throw new WrongTypeError("meal_type", meal_type, "string");
+    throw new WrongTypeError({ meal_type }, "string");
   const isMealTypeValid = ["breakfast", "lunch", "dinner"].reduce(
     (prevVal, currVal) => currVal === meal_type || prevVal,
     false
@@ -50,23 +50,31 @@ const validateRecordBody = (record: Record) => {
     );
 
   // INGREDIENT
-  if (!ingredient) throw new EmptyFieldError("ingredient");
+  if (!ingredient) throw new EmptyFieldError({ ingredient });
   if (typeof ingredient !== "string")
-    throw new WrongTypeError("ingredient", ingredient, "string");
+    throw new WrongTypeError({ ingredient }, "string");
 
   // FATS, CARBS && PROTEINS
-  const nutrientFields = [
-    { fieldName: "fats_per_100", fieldValue: fats_per_100 },
-    { fieldName: "carbs_per_100", fieldValue: carbs_per_100 },
-    { fieldName: "proteins_per_100", fieldValue: proteins_per_100 },
-  ];
-  nutrientFields.forEach((field) => {
+
+  const nutrientsObj: { [key: string]: number } = {
+    fats_per_100,
+    carbs_per_100,
+    proteins_per_100,
+  };
+  const nutrientKeys = Object.keys(nutrientsObj);
+  const nutrientsArr = nutrientKeys.map((key) => ({
+    fieldName: key,
+    fieldValue: nutrientsObj[key],
+  }));
+
+  nutrientsArr.forEach((field) => {
     const { fieldName, fieldValue } = field;
     if (fieldValue === null || fieldValue === undefined)
-      throw new EmptyFieldError(fieldName);
+      throw new EmptyFieldError({ [fieldName]: fieldValue });
     if (typeof fieldValue !== "number")
-      throw new WrongTypeError(fieldName, fieldValue, "number");
-    if (fieldValue < 0) throw new CannotBeNegativeError(fieldName, fieldValue);
+      throw new WrongTypeError({ [fieldName]: fieldValue }, "number");
+    if (fieldValue < 0)
+      throw new CannotBeNegativeError({ [fieldName]: fieldValue });
     if (fieldValue > 100)
       throw new AppError(
         `'${fieldName}' cannot be greater than 100. Instead received ${fieldValue}`,
@@ -81,14 +89,14 @@ const validateRecordBody = (record: Record) => {
     );
 
   // QUANTITY
-  if (!quantity) throw new EmptyFieldError("quantity");
+  if (!quantity) throw new EmptyFieldError({ quantity });
   if (typeof quantity !== "number")
-    throw new WrongTypeError("quantity", quantity, "number");
-  if (quantity < 0) throw new CannotBeNegativeError("quantity", quantity);
+    throw new WrongTypeError({ quantity }, "number");
+  if (quantity < 0) throw new CannotBeNegativeError({ quantity });
   if (quantity > 1000) throw new CannotBeGreaterError({ quantity }, 1000);
 
   // UNIT
-  if (!unit) throw new EmptyFieldError("unit");
+  if (!unit) throw new EmptyFieldError({ unit });
   if (unit !== "g" && unit !== "ml")
     throw new AppError(
       `Expected 'unit' to be 'g' or 'ml' instead of ${unit}`,

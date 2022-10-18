@@ -22,15 +22,17 @@ export class AppError extends Error {
 }
 
 export class EmptyFieldError extends AppError {
-  constructor(propName: string) {
+  constructor(obj: { [key: string]: any }) {
+    const propName = Object.keys(obj)[0];
     const message = `Empty field: ${propName}`;
     super(message, 400, "EmptyFieldError");
   }
 }
 
 export class WrongTypeError extends AppError {
-  constructor(propName: string, prop: unknown, expType: string) {
-    const message = `Expected ${propName} to be a ${expType} instead of a ${typeof prop}`;
+  constructor(obj: { [key: string]: unknown }, expType: string) {
+    const [propName, propVal] = getNameAndValue(obj);
+    const message = `Expected ${propName} to be a ${expType} instead of a ${typeof propVal}`;
     super(message, 400, "WrongTypeError");
   }
 }
@@ -46,9 +48,10 @@ export class RecordNotFoundError extends AppError {
 }
 
 export class CannotBeNegativeError extends AppError {
-  constructor(propName: string, propValue: number) {
+  constructor(obj: { [key: string]: number }) {
+    const [propName, propVal] = getNameAndValue(obj);
     super(
-      `'${propName}' cannot be negative. Got ${propValue}`,
+      `'${propName}' cannot be negative. Got ${propVal}`,
       sc.BAD_REQUEST,
       "CannotBeNegativeError"
     );

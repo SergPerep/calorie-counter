@@ -19,7 +19,7 @@ router.get("/", async (req, res, next) => {
     const recordsColl = app.locals.recordsColl;
     const { date: dateStr } = req.query;
     if (typeof dateStr !== "string")
-      throw new WrongTypeError("date", dateStr, "string");
+      throw new WrongTypeError({ date: dateStr }, "string");
     validateDateString(dateStr);
 
     const pipeline = [
