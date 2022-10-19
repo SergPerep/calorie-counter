@@ -1,16 +1,23 @@
 import { MongoClient } from "mongodb";
+import { MongoMemoryServer } from "mongodb-memory-server";
 import dotenv from "dotenv";
 import app from "./app";
 dotenv.config();
 
 // Connection URI
-const { MONGODB_USER, MONGODB_PASSWORD } = process.env;
-const uri = `mongodb+srv://${MONGODB_USER}:${MONGODB_PASSWORD}@cluster0.s0yec.mongodb.net/?retryWrites=true&w=majority`;
+const { MONGODB_USER, MONGODB_PASSWORD, NODE_ENV } = process.env;
+let uri = `mongodb+srv://${MONGODB_USER}:${MONGODB_PASSWORD}@cluster0.s0yec.mongodb.net/?retryWrites=true&w=majority`;
 const dbName = "calorie_counter";
 // Create a new MongoClient
 const client = new MongoClient(uri);
+export let mongod: null | MongoMemoryServer = null;
+
 const connectToDB = async () => {
   try {
+    if (NODE_ENV === "test") {
+      mongod = await MongoMemoryServer.create();
+      uri = mongod.getUri();
+    }
     // Connect the client to the server (optional starting in v4.7)
     await client.connect();
     // Establish and verify connection
