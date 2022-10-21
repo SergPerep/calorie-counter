@@ -1,0 +1,6 @@
+// from 0 to 9
+const genRandomInt = (min = 0, max = 9) => {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
+export default genRandomInt;

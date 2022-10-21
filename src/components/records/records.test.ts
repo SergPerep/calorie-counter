@@ -2,6 +2,8 @@ import request, { Response } from "supertest";
 import app from "../../app";
 import connectToDB, { mongod } from "../../db";
 import sc from "../../utils/statusCodes";
+import genEmptyFieldCases from "./genEmptyFieldCases";
+import genWrongTypeCases from "./genWrongTypeCases";
 interface ExpectedOptions {
   statusCode: number;
   status?: "success" | "fail" | "error";
@@ -27,32 +29,8 @@ afterAll(async () => {
   if (mongod) await mongod.stop();
 });
 
-const testForStatusCode = (
-  uri: string,
-  method: "get" | "post" | "put" | "delete",
-  code: number,
-  body?: object
-) => {
-  it(`Status code is ${code}`, async () => {
-    const response = await request(app)[method](uri).send(body);
-    expect(response.statusCode).toBe(code);
-  });
-};
-
 const getRandomItem = (items: unknown[]) =>
   items[Math.floor(Math.random() * items.length)];
-
-const genMissingFieldCases = (body: { [key: string]: any }) => {
-  const fieldNames = Object.keys(body);
-  return fieldNames.map((fieldName) => {
-    const updatedBody = { ...body };
-    delete updatedBody[fieldName];
-    return {
-      body: updatedBody,
-      missingField: fieldName,
-    };
-  });
-};
 
 // GET RECORDS FOR A DATE
 describe("GET /", () => {
@@ -67,7 +45,7 @@ describe("GET /", () => {
 // CREATE A RECORD
 describe("POST /", () => {
   const uri = "/records";
-  const body = {
+  const correctBody = {
     date: "2022-10-10",
     meal_type: "breakfast",
     ingredient: "Coocoos",
@@ -78,21 +56,33 @@ describe("POST /", () => {
     unit: "ml",
   };
 
-  const missingFieldCases = genMissingFieldCases(body);
-
   it("OK", async () => {
-    const response = await request(app).post(uri).send(body);
+    const response = await request(app).post(uri).send(correctBody);
     expect(response.statusCode).toBe(sc.CREATED);
     checkBasics(response, { statusCode: sc.CREATED });
   });
 
-  it("Missing field", () => {
-    missingFieldCases.forEach(async (testCase) => {
+  it("Empty field", () => {
+    const emptyFieldCases = genEmptyFieldCases(correctBody);
+    emptyFieldCases.forEach(async (testCase) => {
       const response = await request(app).post(uri).send(testCase.body);
       checkBasics(response, {
         statusCode: sc.BAD_REQUEST,
         status: "error",
-        errorMessage: `Empty field: ${testCase.missingField}`,
+        errorMessage: `Empty field: ${testCase.emptyField}`,
+      });
+    });
+  });
+
+  it("Wrong type of a field", () => {
+    const wrongTypeCases = genWrongTypeCases(correctBody);
+    wrongTypeCases.forEach(async (testCase) => {
+      const { body, fieldName, expectedType, wrongType } = testCase;
+      const response = await request(app).post(uri).send(body);
+      checkBasics(response, {
+        statusCode: sc.BAD_REQUEST,
+        status: "error",
+        errorMessage: `Expected ${fieldName} to be a ${expectedType} instead of a ${wrongType}`,
       });
     });
   });

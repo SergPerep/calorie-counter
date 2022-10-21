@@ -35,14 +35,14 @@ const validateRecordBody = (record: Record) => {
   validateDateString(date);
 
   // MEAL TYPE
-  if (!meal_type) throw new EmptyFieldError({ meal_type });
+  if (meal_type === undefined || meal_type === "")
+    throw new EmptyFieldError({ meal_type });
   if (typeof meal_type !== "string")
     throw new WrongTypeError({ meal_type }, "string");
   const isMealTypeValid = ["breakfast", "lunch", "dinner"].reduce(
     (prevVal, currVal) => currVal === meal_type || prevVal,
     false
   );
-  console.log(isMealTypeValid);
   if (!isMealTypeValid)
     throw new AppError(
       `Expected meal_type to be 'breakfast', 'lunch' or 'dinner'. Instead got '${meal_type}' `,
@@ -50,7 +50,8 @@ const validateRecordBody = (record: Record) => {
     );
 
   // INGREDIENT
-  if (!ingredient) throw new EmptyFieldError({ ingredient });
+  if (ingredient === undefined || ingredient === "")
+    throw new EmptyFieldError({ ingredient });
   if (typeof ingredient !== "string")
     throw new WrongTypeError({ ingredient }, "string");
 
@@ -69,7 +70,7 @@ const validateRecordBody = (record: Record) => {
 
   nutrientsArr.forEach((field) => {
     const { fieldName, fieldValue } = field;
-    if (fieldValue === null || fieldValue === undefined)
+    if (fieldValue === NaN || fieldValue === undefined)
       throw new EmptyFieldError({ [fieldName]: fieldValue });
     if (typeof fieldValue !== "number")
       throw new WrongTypeError({ [fieldName]: fieldValue }, "number");
@@ -86,14 +87,16 @@ const validateRecordBody = (record: Record) => {
     );
 
   // QUANTITY
-  if (!quantity) throw new EmptyFieldError({ quantity });
+  if (quantity === undefined || quantity === NaN)
+    throw new EmptyFieldError({ quantity });
   if (typeof quantity !== "number")
     throw new WrongTypeError({ quantity }, "number");
   if (quantity < 0) throw new CannotBeNegativeError({ quantity });
   if (quantity > 1000) throw new CannotBeGreaterError({ quantity }, 1000);
 
   // UNIT
-  if (!unit) throw new EmptyFieldError({ unit });
+  if (unit === undefined || unit === "") throw new EmptyFieldError({ unit });
+  if (typeof unit !== "string") throw new WrongTypeError({ unit }, "string");
   if (unit !== "g" && unit !== "ml")
     throw new AppError(
       `Expected 'unit' to be 'g' or 'ml' instead of ${unit}`,
