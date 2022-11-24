@@ -2,7 +2,7 @@
 
 ## Custom errors
 
-I define custom errors in [appErrors.ts](https://github.com/SergPerep/calorie-counter/blob/main/src/components/errors/appErrors.ts).
+I define custom errors in [appErrors.ts](/src/components/errors/appErrors.ts).
 
 I create an `AppError` class and use it as super generic error object for my application. Why don't I use just `Error`? Cause I want the generic error to hold status codes.
 
@@ -10,7 +10,7 @@ Then I use `AppError` to create more specific error classes, if I am sure that I
 
 ## Throwing errors
 
-Check [recordsAPI.ts](https://github.com/SergPerep/calorie-counter/blob/main/src/components/records/recordsAPI.ts) to see how I throw these errors.
+Check [recordsAPI.ts](/src/components/records/recordsAPI.ts) to see how I throw these errors.
 
 If I use `trycatch`, in a catch statement I always put an error inside `next()`. That way it is always going to be caught by `handleError` middleware.
 
@@ -22,19 +22,19 @@ catch (error) {
 
 ## Handle errors with middleware
 
-`handleErrors` – is a typical express error handler middleware, since it takes an `error` as a first argument. It's going to catch any error passed to the `next()` as an argument.
+[handleErrors.ts](/src/components/errors/handleErrors.ts) – is a typical express error handler middleware, since it takes an `error` as a first argument. It's going to catch any error passed to the `next()` as an argument.
 
 [→ Check express guide: Writing error handlers](https://expressjs.com/en/guide/error-handling.html#writing-error-handlers) for more information about express error handler middleware
 
-`handleErrors` is mounted the last in [app.ts](https://github.com/SergPerep/calorie-counter/blob/main/src/app.ts), so that it would be able to catch errors after controllers throw them.
+`handleErrors` is mounted the last in [app.ts](/src/app.ts), so that it would be able to catch errors after controllers throw them.
 
 Inside this middleware you can check caught `Error` for `error name` or `status code` and decide what to do with it depending on these values.
 
-## Life circle of Error
+## Life circle of an Error
 
-Let's go to the life circle of error.
+Let's go to the life circle of an error.
 
-1. Throw error
+1. Throw an error some where
 
     ```javascript
     if (typeof dateStr !== "string")
